@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ItemTransaction {
+  id               Int               @id @default(autoincrement())
+  itemId           Int
+  item             Item              @relation("ItemTransactions", fields: [itemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  borrowerId       Int
+  borrower         User              @relation(fields: [borrowerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  borrowDate       DateTime          @default(now())
+  returnDate       DateTime?
+  statusBorrow     TransactionStatus @default(PENDING)
+  statusReturn     TransactionStatus @default(PENDING)
+  approvedBorrowId Int?
+  approvedBorrow   User?             @relation("ApproverBorrow", fields: [approvedBorrowId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  approvedReturnId Int?
+  approvedReturn   User?             @relation("ApproverReturn", fields: [approvedReturnId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+}
+
+model Item {
+  id              Int               @id @default(autoincrement())
+  uuid            String
+  name            String
+  description     String?
+  parcelNumber    String            @unique
+  imageUrl        String? // เก็บ URL รูปภาพของสิ่งของ
+  status          ItemStatus        @default(AVAILABLE)
+  detail          ItemDetail        @relation(fields: [detailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  detailId        Int
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  ItemTransaction ItemTransaction[] @relation("ItemTransactions")
+}
+
+model ItemDetail {
+  id         Int          @id @default(autoincrement())
+  categoryId Int
+  category   ItemCategory @relation(fields: [categoryId], references: [id], onUpdate: Cascade)
+  brandId    Int
+  brand      ItemBrand    @relation(fields: [brandId], references: [id], onUpdate: Cascade)
+  typeId     Int
+  type       ItemType     @relation(fields: [typeId], references: [id], onUpdate: Cascade)
+  items      Item[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now()) @updatedAt
+}
+
+model ItemCategory {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  type       ItemType[]
+  brand      ItemBrand[]
+  itemDetail ItemDetail[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now()) @updatedAt
+}
+
+model ItemType {
+  id             Int          @id @default(autoincrement())
+  name           String       @unique
+  itemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id], onUpdate: Cascade)
+  itemCategoryId Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  ItemDetail     ItemDetail[]
+}
+
+model ItemBrand {
+  id             Int           @id @default(autoincrement())
+  name           String        @unique
+  itemCategory   ItemCategory? @relation(fields: [itemCategoryId], references: [id], onUpdate: Cascade)
+  itemCategoryId Int?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  ItemDetail     ItemDetail[]
+}
+
+model User {
+  id              Int               @id @default(autoincrement())
+  cid             String?           @unique @db.VarChar(13)
+  username        String            @unique
+  password        String
+  name            String
+  phone           String
+  email           String            @unique
+  profileUrl      String? // เก็บ URL รูปภาพของสิ่งของ
+  address         String            @db.MediumText
+  role            Role              @default(USER)
+  borrowApproved  ItemTransaction[] @relation("ApproverBorrow")
+  returnApproved  ItemTransaction[] @relation("ApproverReturn")
+  ItemTransaction ItemTransaction[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+}
+
+enum TransactionStatus {
+  PENDING
+  WAITAPPROVAL
+  APPROVED
+  REJECTED
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ItemStatus {
+  AVAILABLE
+  WAITAPPROVAL
+  BORROWED
+  MAINTENANCE
+}
