@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Save } from "lucide-react";
+import { Save, SquareArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import {
   Card,
@@ -26,6 +26,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -155,11 +156,17 @@ const RegisterPage = () => {
     <div className="flex items-center justify-center min-h-screen">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">ลงทะเบียน</CardTitle>
+          <div className="flex items-center">
+            <Link href="/" className="mr-2">
+              <SquareArrowLeft className="h-5 w-5 text-gray-600" />
+            </Link>
+            <CardTitle className="text-2xl">ลงทะเบียน</CardTitle>
+          </div>
           <CardDescription>
             แผนกเทคโนโลยีธุรกิจดิจิทัล วิทยาลัยการอาชีพปัตตานี
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <Form {...form}>
             <form

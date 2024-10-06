@@ -24,7 +24,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Save } from "lucide-react";
+import { SquareArrowLeft, LogIn } from "lucide-react";
 
 const formSchema = z.object({
   username: z.string().min(5, {
@@ -77,7 +77,13 @@ const LoginPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-slate-300">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">เข้าสู่ระบบ</CardTitle>
+          <div className="flex items-center">
+            <Link href="/" className="mr-2">
+              <SquareArrowLeft className="h-5 w-5 text-gray-600" />
+              {/* Back icon */}
+            </Link>
+            <CardTitle className="text-2xl">เข้าสู่ระบบ</CardTitle>
+          </div>
           <CardDescription>
             แผนกเทคโนโลยีธุรกิจดิจิทัล วิทยาลัยการอาชีพปัตตานี
           </CardDescription>
@@ -119,7 +125,7 @@ const LoginPage = () => {
 
               <Button type="submit" className="w-full">
                 <span className="mr-2">เข้าสู่ระบบ</span>
-                <Save className="h-4 w-4" />
+                <LogIn className="h-4 w-4" />
               </Button>
             </form>
           </Form>
