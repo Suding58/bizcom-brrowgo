@@ -28,6 +28,9 @@ export type Item = {
   categoryId: number;
   typeId: number;
   brandId: number;
+  borrowerName: string | null;
+  borrowerPhone: string | null;
+  borrowDate: string | null;
 };
 
 export type ItemWithTransaction = {
@@ -65,4 +68,17 @@ export type User = {
   role: string;
   createdAt: string;
   updatedAt: string;
+};
+
+export type NotificationsTransaction = {
+  borrowCount: number;
+  returnCount: number;
+};
+
+export type MenuItem = {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  srLabel: string;
+  notifications: number;
 };

@@ -21,6 +21,7 @@ export async function middleware(request: NextRequest) {
     "/api/manage-items/uuid/",
     "/api/manage-items/transaction/borrow/",
     "/api/manage-items/transaction/return/",
+    "/api/notifications/:path*",
   ];
 
   // Check if the user is trying to access an admin route

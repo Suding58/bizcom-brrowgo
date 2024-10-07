@@ -408,18 +408,17 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
                   <FormField
                     control={form.control}
                     name="image"
-                    render={({ field: { onChange, ...rest } }) => (
+                    render={({ field }) => (
                       <FormItem>
-                        <FormLabel>รูปภาพ</FormLabel>
+                        <FormLabel>รูปภาพโปรไฟล์</FormLabel>
                         <FormControl>
                           <Input
                             type="file"
                             accept="image/*"
                             onChange={(e) => {
                               handleImageChange(e);
-                              onChange(e.target.files);
+                              field.onChange(e.target.files);
                             }}
-                            {...rest}
                           />
                         </FormControl>
                         <FormMessage />
@@ -428,6 +427,8 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
                             <Image
                               src={imagePreview}
                               alt="Preview"
+                              width={50}
+                              height={50}
                               className="w-[150px] mt-2 max-w-xs rounded-lg "
                             />
                           </div>

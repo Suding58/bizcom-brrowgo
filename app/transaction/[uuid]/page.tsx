@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import BorrowReturnItemForm from "@/components/dialog/borrow-return-item";
 import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
+import { timeTH } from "@/utility/time-format";
 
 const BorrowPage = ({ params }: { params: { uuid: string } }) => {
   const { uuid } = params;
@@ -93,6 +93,16 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
               </Label>
               <Label className="text-md">{`ชื่อ: ${data?.name}`} </Label>
               <Label className="text-md">{`หมวดหมู่/ประเภท/ยี่ห้อ: ${data?.category}/${data?.type}/${data?.brand}`}</Label>
+              {data?.borrowerName && (
+                <Label className="text-md">
+                  {`ผู้ยืม: ${data?.name} | ${data?.borrowerPhone}`}{" "}
+                </Label>
+              )}
+              {data?.borrowDate && (
+                <Label className="text-md">
+                  {`วันที่ยืม: ${timeTH(data.borrowDate)}`}
+                </Label>
+              )}
             </div>
           )}
         </CardContent>
@@ -104,7 +114,6 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
               reLoading={setLoading}
             />
           )}
-          <Separator />
           <div className="mt-4 text-center text-sm">
             ไม่มีบัญชีผู้ใช้ ?
             <Link href="/register" className="underline">

@@ -16,6 +16,7 @@ import {
   Tooltip,
   Legend,
   CartesianGrid,
+  ResponsiveContainer,
 } from "recharts";
 import axios from "axios";
 import { toast } from "sonner";
@@ -28,8 +29,8 @@ interface ChartData {
 
 interface Transaction {
   borrowDate: Date;
-  returnDate: Date | null; // ใช้ null ถ้าอาจไม่มีค่า
-  statusBorrow: "APPROVED" | "DECLINED"; // หรือประเภทที่เหมาะสม
+  returnDate: Date | null;
+  statusBorrow: "APPROVED" | "DECLINED";
 }
 
 const BarChartTransaction = () => {
@@ -88,21 +89,20 @@ const BarChartTransaction = () => {
         </div>
       </CardHeader>
       <CardContent className="flex flex-1 justify-center">
-        <BarChart
-          className="w-full"
-          width={500} // กำหนดเป็นค่าเริ่มต้นหรือจะไม่กำหนดเลย
-          height={300}
-          data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="borrowed" fill="#82ca9d" name="การยืม" />
-          <Bar dataKey="returned" fill="#8884d8" name="การคืน" />
-        </BarChart>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={data}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="borrowed" fill="#82ca9d" name="การยืม" />
+            <Bar dataKey="returned" fill="#8884d8" name="การคืน" />
+          </BarChart>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );

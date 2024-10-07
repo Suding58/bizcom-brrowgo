@@ -4,13 +4,18 @@ import prisma from "@/lib/prisma";
 export async function GET() {
   const itemTransactions = await prisma.itemTransaction.findMany({
     where: {
-      AND: [
+      OR: [
         {
-          statusReturn: "WAITAPPROVAL",
+          statusReturn: "PENDING",
+        },
+        {
+          statusBorrow: "WAITAPPROVAL",
         },
         {
           approvedReturn: null,
         },
+      ],
+      AND: [
         {
           NOT: {
             returnDate: null,

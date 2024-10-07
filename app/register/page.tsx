@@ -45,11 +45,11 @@ const formSchema = z
     username: z.string().min(5, {
       message: "ความยาวขั่นต่ำ 5 ตัวอักษร",
     }),
-    password: z.string().min(10, {
-      message: "ความยาวขั่นต่ำ 10 ตัวอักษร",
+    password: z.string().min(8, {
+      message: "ความยาวขั่นต่ำ 8 ตัวอักษร",
     }),
-    confirmPassword: z.string().min(10, {
-      message: "ความยาวขั่นต่ำ 10 ตัวอักษร",
+    confirmPassword: z.string().min(8, {
+      message: "ความยาวขั่นต่ำ 8 ตัวอักษร",
     }),
     name: z.string().min(2, {
       message: "กรุณากรอกชื่อ-สกุล",
@@ -61,7 +61,7 @@ const formSchema = z
       .string()
       .min(1, { message: "This field has to be filled." })
       .email("This is not a valid email."),
-    address: z.string().min(10, {
+    address: z.string().min(5, {
       message: "กรุณากรอกที่อยู่",
     }),
     image: z
@@ -312,7 +312,7 @@ const RegisterPage = () => {
                   <FormField
                     control={form.control}
                     name="image"
-                    render={({ field: { onChange, ...rest } }) => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>รูปภาพโปรไฟล์</FormLabel>
                         <FormControl>
@@ -321,9 +321,8 @@ const RegisterPage = () => {
                             accept="image/*"
                             onChange={(e) => {
                               handleImageChange(e);
-                              onChange(e.target.files);
+                              field.onChange(e.target.files);
                             }}
-                            {...rest}
                           />
                         </FormControl>
                         <FormMessage />
@@ -332,6 +331,8 @@ const RegisterPage = () => {
                             <Image
                               src={imagePreview}
                               alt="Preview"
+                              width={50}
+                              height={50}
                               className="w-[150px] mt-2 max-w-xs rounded-lg "
                             />
                           </div>

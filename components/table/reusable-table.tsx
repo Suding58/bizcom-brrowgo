@@ -78,7 +78,7 @@ const DataTable = <T extends Record<string, unknown>>({
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
-        <div className="flex gap-2">
+        <div className="flex gap-2 ml-2">
           {qrCodePrint && (
             <Button
               className="h-8 w-8 p-0"

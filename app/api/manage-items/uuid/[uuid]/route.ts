@@ -33,6 +33,24 @@ export async function GET(
           },
         },
       },
+      ItemTransaction: {
+        where: {
+          statusBorrow: "APPROVED", // Only include transactions with statusBorrow == "APPROVED"
+          returnDate: null,
+        },
+        orderBy: {
+          borrowDate: "desc", // or 'createdAt' if you prefer
+        },
+        take: 1, // Get the latest transaction
+        include: {
+          borrower: {
+            select: {
+              name: true,
+              phone: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -58,6 +76,18 @@ export async function GET(
     status: item.status,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
+    borrowerName:
+      item.ItemTransaction.length > 0
+        ? item.ItemTransaction[0].borrower.name
+        : null,
+    borrowerPhone:
+      item.ItemTransaction.length > 0
+        ? item.ItemTransaction[0].borrower.phone
+        : null,
+    borrowDate:
+      item.ItemTransaction.length > 0
+        ? item.ItemTransaction[0].borrowDate
+        : null,
   };
 
   return NextResponse.json(

@@ -59,7 +59,7 @@ const QRCodePrinter: React.FC<QRCodePrinterProps> = ({ uuids }) => {
               // justifyContent: "space-between", // Space out children
               alignItems: "center",
               width: "240px", // Fixed width for equal sizing
-              height: "200px", // Fixed height for equal sizing
+              height: "180px", // Fixed height for equal sizing
               padding: "5px",
               border: "1px solid black",
             }}
@@ -76,7 +76,8 @@ const QRCodePrinter: React.FC<QRCodePrinterProps> = ({ uuids }) => {
             <Image
               src={qrCodeUrl}
               alt={`QR Code for UUID ${uuids[index].uuid}`}
-              style={{ width: "150px", height: "150px", margin: "0px" }}
+              width={120}
+              height={120}
             />
             <p style={{ marginTop: "-5px", fontSize: "14px" }}>
               {uuids[index].uuid}

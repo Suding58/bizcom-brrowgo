@@ -3,7 +3,6 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   const itemCategory = await prisma.itemCategory.findMany();
-
   return NextResponse.json(
     {
       success: true,

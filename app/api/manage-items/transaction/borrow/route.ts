@@ -9,6 +9,9 @@ export async function GET() {
           statusBorrow: "PENDING",
         },
         {
+          statusBorrow: "WAITAPPROVAL",
+        },
+        {
           approvedBorrow: null,
         },
       ],

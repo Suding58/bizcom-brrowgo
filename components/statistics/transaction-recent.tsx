@@ -1,5 +1,3 @@
-// components/TransactionRecent.tsx
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -64,7 +62,10 @@ const TransactionRecent = () => {
       </CardHeader>
       <CardContent className="grid gap-4">
         {transactions.map((transaction) => (
-          <div key={transaction.id} className="flex items-center gap-4">
+          <div
+            key={transaction.id}
+            className="flex flex-col sm:flex-row items-center gap-4"
+          >
             <Avatar className="hidden h-9 w-9 sm:flex">
               <AvatarImage
                 src={transaction.borrower.profileUrl || "/logo/bizcom-logo.jpg"}
@@ -72,7 +73,7 @@ const TransactionRecent = () => {
               />
               <AvatarFallback>{transaction.borrower.name[0]}</AvatarFallback>
             </Avatar>
-            <div className="grid gap-1">
+            <div className="grid gap-1 text-center sm:text-left">
               <p className="text-sm font-medium leading-none">
                 {`${transaction.borrower.name}/${
                   transaction.returnDate === null ? "ยืม" : "คืน"

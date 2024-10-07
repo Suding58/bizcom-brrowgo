@@ -30,8 +30,8 @@ const formSchema = z.object({
   username: z.string().min(5, {
     message: "ความยาวขั่นต่ำ 5 ตัวอักษร",
   }),
-  password: z.string().min(10, {
-    message: "ความยาวขั่นต่ำ 10 ตัวอักษร",
+  password: z.string().min(8, {
+    message: "ความยาวขั่นต่ำ 8 ตัวอักษร",
   }),
 });
 
