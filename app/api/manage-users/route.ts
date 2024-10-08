@@ -3,6 +3,7 @@ import { Role } from "@prisma/client";
 import saveImage from "@/utility/save-image";
 import { hashPassword } from "@/utility/bcrypt";
 import prisma from "@/lib/prisma";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const users = await prisma.user.findMany();

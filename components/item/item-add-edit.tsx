@@ -1,5 +1,6 @@
 "use client";
 
+import { ItemStatus } from "@prisma/client";
 import { useState, Dispatch, useEffect, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,6 +54,10 @@ const formSchema = z.object({
   description: z.string().optional(),
   parcelNumber: z.string().min(1, {
     message: "กรุณากรอกหมายเลขทะเบียน",
+  }),
+  status: z.string({
+    required_error: "กรุณาเลือกสถานะ",
+    invalid_type_error: "สถานะไม่ถูกต้อง",
   }),
   image: z
     .any()
@@ -126,6 +131,7 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
       categoryId: item?.categoryId || 0,
       typeId: item?.typeId || 0,
       brandId: item?.brandId || 0,
+      status: item?.status || "AVAILABLE",
     },
   });
 
@@ -144,6 +150,8 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
       formData.append("categoryId", values.categoryId.toString());
       formData.append("typeId", values.typeId.toString());
       formData.append("brandId", values.brandId.toString());
+      formData.append("status", values.status);
+
       if (values.image && values.image.length > 0) {
         formData.append("image", values.image[0]);
       }
@@ -255,19 +263,21 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
               className="space-y-8 mt-4"
             >
               <div className="grid grid-cols-2 gap-2">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>ชื่อรายการ</FormLabel>
-                      <FormControl>
-                        <Input placeholder="กรอกชื่อรายการ" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="col-span-2">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ชื่อรายการ</FormLabel>
+                        <FormControl>
+                          <Input placeholder="กรอกชื่อรายการ" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <FormField
                   control={form.control}
@@ -361,6 +371,38 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
                               {brand.name}
                             </SelectItem>
                           ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="status" // Make sure this matches the field name in your form schema
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>สถานะ</FormLabel>
+                      <Select
+                        onValueChange={field.onChange} // Update the form state on value change
+                        value={field.value ? field.value.toString() : undefined} // Set the current value
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="เลือกสถานะ" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Object.values(ItemStatus).map(
+                            (
+                              status // Map over the Role enum values
+                            ) => (
+                              <SelectItem key={status} value={status}>
+                                {status}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
                       <FormMessage />

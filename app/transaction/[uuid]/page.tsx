@@ -93,12 +93,12 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
               </Label>
               <Label className="text-md">{`ชื่อ: ${data?.name}`} </Label>
               <Label className="text-md">{`หมวดหมู่/ประเภท/ยี่ห้อ: ${data?.category}/${data?.type}/${data?.brand}`}</Label>
-              {data?.borrowerName && (
+              {data?.status !== "MAINTENANCE" && data?.borrowerName && (
                 <Label className="text-md">
                   {`ผู้ยืม: ${data?.name} | ${data?.borrowerPhone}`}{" "}
                 </Label>
               )}
-              {data?.borrowDate && (
+              {data?.status !== "MAINTENANCE" && data?.borrowDate && (
                 <Label className="text-md">
                   {`วันที่ยืม: ${timeTH(data.borrowDate)}`}
                 </Label>

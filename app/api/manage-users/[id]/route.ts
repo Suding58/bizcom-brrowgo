@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Role } from "@prisma/client";
 import saveImage from "@/utility/save-image";
 import prisma from "@/lib/prisma";
+export const dynamic = "force-dynamic";
 
 export async function GET(
   request: Request,

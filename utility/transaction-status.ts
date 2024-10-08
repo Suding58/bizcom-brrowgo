@@ -1,7 +1,7 @@
 const getColorBackground = (status: string): string => {
   switch (status) {
     case "PENDING":
-      return "bg-primary-500 hover:bg-primary-400"; // สีเขียว
+      return "bg-cyan-900"; // สีเขียว
     case "APPROVED":
       return "bg-green-500 hover:bg-green-400"; // สีเขียว
     case "REJECTED":

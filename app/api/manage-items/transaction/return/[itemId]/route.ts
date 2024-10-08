@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma"; // ตรวจสอบให้แน่ใจว่าคุณนำเข้า Prisma Client
+export const dynamic = "force-dynamic";
 
 export async function PUT(
   request: NextRequest,

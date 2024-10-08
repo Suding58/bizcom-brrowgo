@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import saveImage from "@/utility/save-image";
 import { v4 as uuidv4 } from "uuid"; // นำเข้า uuid
 import prisma from "@/lib/prisma";
+import { ItemStatus } from "@prisma/client";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const items = await prisma.item.findMany({
@@ -66,6 +68,7 @@ export async function POST(request: NextRequest) {
     const categoryId = parseInt(formData.get("categoryId") as string);
     const typeId = parseInt(formData.get("typeId") as string);
     const brandId = parseInt(formData.get("brandId") as string);
+    const statusString = formData.get("status") as string;
     const image = formData.get("image") as File;
 
     // ตรวจสอบว่ามีข้อมูลที่จำเป็นครบถ้วน
@@ -75,7 +78,7 @@ export async function POST(request: NextRequest) {
       !categoryId ||
       !typeId ||
       !brandId ||
-      !image
+      !statusString
     ) {
       return NextResponse.json(
         { error: "กรุณากรอกข้อมูลให้ครบถ้วน" },
@@ -109,6 +112,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let itemStatus: ItemStatus;
+    if (statusString === ItemStatus.AVAILABLE) {
+      itemStatus = ItemStatus.AVAILABLE;
+    } else if (statusString === ItemStatus.WAITAPPROVAL) {
+      itemStatus = ItemStatus.WAITAPPROVAL;
+    } else if (statusString === ItemStatus.BORROWED) {
+      itemStatus = ItemStatus.BORROWED;
+    } else {
+      itemStatus = ItemStatus.MAINTENANCE;
+    }
+
     // บันทึกข้อมูลลงในฐานข้อมูล
     let newItem;
     try {
@@ -118,6 +132,7 @@ export async function POST(request: NextRequest) {
           uuid: uuidv4(),
           description,
           parcelNumber,
+          status: itemStatus,
           imageUrl: `/uploads/item/${imageName}`,
           detailId: detailId.id,
         },

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import saveImage from "@/utility/save-image";
 import prisma from "@/lib/prisma";
+import { ItemStatus } from "@prisma/client";
+export const dynamic = "force-dynamic";
 
 export async function GET(
   request: Request,
@@ -82,10 +84,18 @@ export async function PUT(
     const categoryId = parseInt(formData.get("categoryId") as string);
     const typeId = parseInt(formData.get("typeId") as string);
     const brandId = parseInt(formData.get("brandId") as string);
+    const statusString = formData.get("status") as string;
     const image = formData.get("image") as File;
 
     // ตรวจสอบว่ามีข้อมูลที่จำเป็นครบถ้วน
-    if (!name || !parcelNumber || !categoryId || !typeId || !brandId) {
+    if (
+      !name ||
+      !parcelNumber ||
+      !categoryId ||
+      !typeId ||
+      !brandId ||
+      !statusString
+    ) {
       return NextResponse.json(
         { error: "กรุณากรอกข้อมูลให้ครบถ้วน" },
         { status: 400 }
@@ -117,6 +127,17 @@ export async function PUT(
       }
     }
 
+    let itemStatus: ItemStatus;
+    if (statusString === ItemStatus.AVAILABLE) {
+      itemStatus = ItemStatus.AVAILABLE;
+    } else if (statusString === ItemStatus.WAITAPPROVAL) {
+      itemStatus = ItemStatus.WAITAPPROVAL;
+    } else if (statusString === ItemStatus.BORROWED) {
+      itemStatus = ItemStatus.BORROWED;
+    } else {
+      itemStatus = ItemStatus.MAINTENANCE;
+    }
+
     const updatedItem = await prisma.item.update({
       where: { id: Number(id) },
       data: {
@@ -124,6 +145,7 @@ export async function PUT(
         description: description,
         parcelNumber: parcelNumber,
         imageUrl: imageUrl ? `/uploads/${imageUrl}` : itemExits.imageUrl,
+        status: itemStatus,
         detail: {
           update: {
             categoryId: categoryId,

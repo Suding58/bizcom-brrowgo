@@ -71,7 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
 
     fetchNotificationCounts();
-  }, []);
+  }, [currentPath]);
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
