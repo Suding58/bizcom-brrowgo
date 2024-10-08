@@ -80,7 +80,7 @@ const QRCodePrinter: React.FC<QRCodePrinterProps> = ({ uuids }) => {
               height={120}
             />
             <p style={{ marginTop: "-5px", fontSize: "14px" }}>
-              {uuids[index].uuid}
+              แผนเทคโนโลยีธุรกิจดิจิทัล วิทยาลัยการอาชีพปัตตานี
             </p>
           </div>
         ))}

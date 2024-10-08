@@ -154,7 +154,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <Link
                     key={index}
                     href={`/dashboard${item.href}`}
-                    className={`flex items-center gap-4 px-2.5 ${
+                    className={`flex justify-start gap-4 px-2.5 ${
                       currentPath === `/dashboard${item.href}`
                         ? "text-foreground"
                         : "text-muted-foreground hover:text-foreground"
@@ -163,30 +163,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   >
                     <item.icon className="h-5 w-5" />
                     {item.label}
+                    {item.notifications > 0 && (
+                      <Badge
+                        className="flex h-4 w-4 items-center justify-center rounded-full text-xs"
+                        variant="destructive"
+                      >
+                        {item.notifications}
+                      </Badge>
+                    )}
                   </Link>
                 ))}
               </nav>
             </SheetContent>
           </Sheet>
-          {/* <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="#">Dashboard</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="#">Orders</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb> */}
           <div className="relative ml-auto flex-1 md:grow-0">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input

@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type ItemTransactions = {
   id: number;
   borrowerName: string;
