@@ -70,8 +70,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       }
     };
 
+    // เรียกฟังก์ชันทันทีเมื่อ effect ทำงาน
     fetchNotificationCounts();
-  }, [currentPath]);
+
+    // ตั้งค่า interval เพื่อเรียกฟังก์ชันทุก 5 วินาที
+    const intervalId = setInterval(fetchNotificationCounts, 5000);
+
+    // Cleanup function เพื่อยกเลิก interval เมื่อคอมโพเนนต์ถูก unmount
+    return () => clearInterval(intervalId);
+  }, [currentPath]); // dependency array ยังคงมี currentPath
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">

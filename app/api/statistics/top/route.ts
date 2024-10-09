@@ -51,15 +51,16 @@ export async function GET() {
       topItems.map(async (item) => {
         const itemDetails = await prisma.item.findUnique({
           where: { id: item.itemId },
-          select: {
-            id: true,
-            name: true,
-            imageUrl: true,
-            detail: { select: { type: true, brand: true } },
+          include: {
+            detail: { select: { category: true, type: true, brand: true } },
           },
         });
         return {
-          ...itemDetails,
+          name: itemDetails?.name,
+          imageUrl: itemDetails?.imageUrl,
+          category: itemDetails?.detail.category.name,
+          type: itemDetails?.detail.type.name,
+          brand: itemDetails?.detail.brand.name,
           borrowCount: item._count.itemId,
         };
       })
