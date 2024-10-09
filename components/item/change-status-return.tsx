@@ -32,6 +32,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSession } from "next-auth/react";
+import { TransactionsApprove } from "@/interface";
+import { notifyApproveRequest } from "@/utility/notify-format";
 
 const formSchema = z.object({
   statusReturn: z
@@ -89,6 +91,8 @@ const ChangeStatusReturn: React.FC<Props> = ({
         toast.success(result.message);
         setIsOpen(false);
         reLoading(true);
+        const approveRequest = result.data as TransactionsApprove;
+        approveRequest && notifyApproveRequest(approveRequest);
       } else {
         toast.warning(result.message);
       }

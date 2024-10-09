@@ -35,6 +35,20 @@ export async function PUT(
       );
     }
 
+    const approverExits = await prisma.user.findFirst({
+      where: { id: Number(approvedReturnId) },
+    });
+
+    if (!approverExits) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "ไม่พบข้อมูลของผู้อนุมัติ",
+        },
+        { status: 200 }
+      );
+    }
+
     let statusReturn: TransactionStatus;
 
     if (statusReturnString === TransactionStatus.APPROVED) {
@@ -53,6 +67,20 @@ export async function PUT(
         statusReturn: statusReturn,
         approvedReturnId: approvedReturnId,
       },
+      include: {
+        borrower: true,
+        item: {
+          include: {
+            detail: {
+              include: {
+                category: true,
+                type: true,
+                brand: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (updatedItem) {
@@ -68,8 +96,16 @@ export async function PUT(
     return NextResponse.json(
       {
         success: true,
-        message: "แก้ไขข้อมูลสำเร็จ",
-        data: updatedItem,
+        message: "อนุมัติสำเร็จ",
+        data: {
+          type: "คืน",
+          uuid: updatedItem.item.uuid,
+          approveName: approverExits.name,
+          itemName: updatedItem.item.name,
+          itemDetail: `${updatedItem.item.detail.category.name}/${updatedItem.item.detail.type.name}/${updatedItem.item.detail.brand.name}`,
+          borrowerName: updatedItem.borrower.name,
+          borrowerPhone: updatedItem.borrower.phone,
+        },
       },
       { status: 200 }
     );

@@ -24,6 +24,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import {
+  notifyBorrowRequest,
+  notifyReturnRequest,
+} from "@/utility/notify-format";
+import { BorrowReturnRequest } from "@/interface";
 
 const formSchema = z.object({
   cid: z
@@ -79,6 +84,10 @@ const BorrowReturnItemForm: React.FC<Props> = ({ type, itemId, reLoading }) => {
         toast.success(result.message);
         setIsOpen(false);
         reLoading(true);
+        const borrowReturnRequest = result.data as BorrowReturnRequest;
+        type === "AVAILABLE"
+          ? notifyBorrowRequest(borrowReturnRequest)
+          : notifyReturnRequest(borrowReturnRequest);
       } else {
         toast.warning(result.message);
       }

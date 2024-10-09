@@ -8,13 +8,15 @@ export const sendTelegramNotification = async (message: string) => {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
     throw new Error("Telegram Bot Token or Chat ID is not defined");
   }
-
+  if (!message || message.length == 0) {
+    throw new Error("Message not found");
+  }
   const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
   try {
     await axios.post(url, {
       chat_id: TELEGRAM_CHAT_ID,
-      text: message,
+      text: `🚨แจ้งเตือน🚨\n${message}`,
     });
   } catch (error) {
     console.error("Error sending Telegram notification:", error);

@@ -1,43 +1,16 @@
-import { ItemTransactions } from "@/interface";
-
-const notifyBorrowRequest = (transaction: ItemTransaction) => {
-  const { item, borrower } = transaction;
-  return `📥 สวัสดี ${borrower.name}, คำขอยืมของคุณสำหรับ "${item.name}" (Parcel Number: ${item.parcelNumber}) ได้รับแล้วและกำลังรอการอนุมัติ ⏳`;
+import { BorrowReturnRequest, TransactionsApprove } from "@/interface";
+import { sendTelegramNotification } from "@/utility/telegramNotifier";
+export const notifyBorrowRequest = (request: BorrowReturnRequest) => {
+  const message = `📥 คำขอยืมจาก${request.borrowerName}\n🔑 รหัสรายการ ${request.uuid}\n📦 รายการยืม "${request.itemName}" \n📃 รายละเอียด ${request.itemDetail}\n⏳กำลังรอการอนุมัติยืม`;
+  sendTelegramNotification(message);
 };
 
-const notifyReturnRequest = (transaction: ItemTransaction) => {
-  const { item, borrower } = transaction;
-  return `🔄 สวัสดี ${borrower.name}, คำขอคืนของคุณสำหรับ "${item.name}" (Parcel Number: ${item.parcelNumber}) ได้รับแล้วและกำลังรอการอนุมัติ ⏳`;
+export const notifyReturnRequest = (request: BorrowReturnRequest) => {
+  const message = `↩️ คำขอคืนจาก${request.borrowerName}\n🔑 รหัสรายการ ${request.uuid}\n📦 รายการคืน "${request.itemName}" \n📃 รายละเอียด ${request.itemDetail}\n⏳กำลังรอการอนุมัติคืน`;
+  sendTelegramNotification(message);
 };
 
-const notifyBorrowApproval = (transaction: ItemTransaction) => {
-  const { item, borrower, statusBorrow, approvedBorrow } = transaction;
-  const statusMessage =
-    statusBorrow === "APPROVED" ? "อนุมัติแล้ว ✅" : "ถูกปฏิเสธ ❌";
-  return `📢 สวัสดี ${borrower.name}, คำขอยืมของคุณสำหรับ "${item.name}" (Parcel Number: ${item.parcelNumber}) ได้รับการ${statusMessage} โดย ${approvedBorrow?.name}.`;
-};
-
-const notifyReturnApproval = (transaction: ItemTransaction) => {
-  const { item, borrower, statusReturn, approvedReturn } = transaction;
-  const statusMessage =
-    statusReturn === "APPROVED" ? "อนุมัติแล้ว ✅" : "ถูกปฏิเสธ ❌";
-  return `📢 สวัสดี ${borrower.name}, คำขอคืนของคุณสำหรับ "${item.name}" (Parcel Number: ${item.parcelNumber}) ได้รับการ${statusMessage} โดย ${approvedReturn?.name}.`;
-};
-
-const notifyStatusUpdate = (transaction: ItemTransaction) => {
-  const { item, borrower, statusBorrow, statusReturn } = transaction;
-  let statusMessage = "";
-
-  if (statusBorrow !== "PENDING") {
-    statusMessage += `สถานะการยืม: ${
-      statusBorrow === "APPROVED" ? "อนุมัติแล้ว ✅" : "รอการอนุมัติ ⏳"
-    }. `;
-  }
-  if (statusReturn !== "PENDING") {
-    statusMessage += `สถานะการคืน: ${
-      statusReturn === "APPROVED" ? "อนุมัติแล้ว ✅" : "รอการอนุมัติ ⏳"
-    }. `;
-  }
-
-  return `🔔 สวัสดี ${borrower.name}, สถานะการทำรายการของคุณสำหรับ "${item.name}" (Parcel Number: ${item.parcelNumber}) ได้รับการอัปเดต. ${statusMessage}`;
+export const notifyApproveRequest = (request: TransactionsApprove) => {
+  const message = `🔎 อนุมัติ ${request.type}\n👨🏻‍💻 ผู้อนุมัติ ${request.approveName}\n🔑 รหัสรายการ ${request.uuid}\n📦 รายการยืม "${request.itemName}" \n📃 รายละเอียด ${request.itemDetail}`;
+  sendTelegramNotification(message);
 };

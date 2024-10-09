@@ -57,11 +57,11 @@ export async function PUT(
     }
 
     // ตรวจสอบว่าผู้ใช้มีอยู่ในฐานข้อมูล
-    const userExists = await prisma.user.findFirst({
+    const userExits = await prisma.user.findFirst({
       where: { cid: cid },
     });
 
-    if (!userExists) {
+    if (!userExits) {
       return NextResponse.json(
         {
           success: false,
@@ -72,7 +72,7 @@ export async function PUT(
     }
 
     // ตรวจสอบว่า cid ของผู้คืนตรงกับ cid ของผู้ยืม
-    if (userExists.id !== lastTransaction.borrowerId) {
+    if (userExits.id !== lastTransaction.borrowerId) {
       return NextResponse.json(
         {
           success: false,
@@ -88,6 +88,19 @@ export async function PUT(
       data: {
         returnDate: new Date(), // กำหนดวันที่คืน
         statusReturn: "WAITAPPROVAL",
+      },
+      include: {
+        item: {
+          include: {
+            detail: {
+              include: {
+                category: true,
+                type: true,
+                brand: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -105,6 +118,13 @@ export async function PUT(
       {
         success: updatedTransaction != null,
         message: updatedTransaction ? "คืนสำเร็จรออนุมัติ" : "คืนไม่สำเร็จ",
+        data: {
+          uuid: updatedTransaction.item.uuid,
+          itemName: updatedTransaction.item.name,
+          itemDetail: `${updatedTransaction.item.detail.category.name}/${updatedTransaction.item.detail.type.name}/${updatedTransaction.item.detail.brand.name}`,
+          borrowerName: userExits.name,
+          borrowerPhone: userExits.phone,
+        },
       },
       { status: 200 }
     );

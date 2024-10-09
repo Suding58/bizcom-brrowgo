@@ -131,6 +131,7 @@ const ManageReturningTablePage = () => {
               alt={row.original.name}
               width={80} // กำหนดความกว้างของภาพ
               height={80} // กำหนดความสูงของภาพ
+              priority={true}
               className="object-cover h-20 w-20" // กำหนด class สำหรับการจัดการสไตล์
             />
           </div>

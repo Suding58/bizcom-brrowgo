@@ -79,6 +79,7 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
                 alt={uuid}
                 width={80} // กำหนดความกว้างของภาพ
                 height={80} // กำหนดความสูงของภาพ
+                priority={true}
                 className="object-cover min-w-[250px] justify-self-center rounded-sm" // กำหนด class สำหรับการจัดการสไตล์
               />
               <Badge

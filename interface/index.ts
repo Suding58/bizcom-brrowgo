@@ -1,4 +1,20 @@
-import { Dispatch, SetStateAction } from "react";
+export type BorrowReturnRequest = {
+  uuid: string;
+  itemName: string;
+  itemDetail: string;
+  borrowerName: string;
+  borrowerPhone: string;
+};
+
+export type TransactionsApprove = {
+  type: string;
+  uuid: string;
+  approveName: string;
+  itemName: string;
+  itemDetail: string;
+  borrowerName: string;
+  borrowerPhone: string;
+};
 
 export type ItemTransactions = {
   id: number;

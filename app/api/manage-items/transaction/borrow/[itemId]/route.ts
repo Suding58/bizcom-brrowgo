@@ -64,6 +64,19 @@ export async function POST(
         borrowerId: userExits.id,
         statusBorrow: "WAITAPPROVAL",
       },
+      include: {
+        item: {
+          include: {
+            detail: {
+              include: {
+                category: true,
+                type: true,
+                brand: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (newTransaction) {
@@ -79,6 +92,13 @@ export async function POST(
       {
         success: newTransaction != null,
         message: newTransaction ? "ยืมสำเร็จรออนุมัติ" : "ยืมไม่สำเร็จ",
+        data: {
+          uuid: newTransaction.item.uuid,
+          itemName: newTransaction.item.name,
+          itemDetail: `${newTransaction.item.detail.category.name}/${newTransaction.item.detail.type.name}/${newTransaction.item.detail.brand.name}`,
+          borrowerName: userExits.name,
+          borrowerPhone: userExits.phone,
+        },
       },
       { status: 201 }
     );
