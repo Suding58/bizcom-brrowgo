@@ -32,7 +32,6 @@ interface ApiResponse {
 
 const TopBorrowersAndItems = () => {
   const [data, setData] = useState<ApiResponse | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,8 +46,6 @@ const TopBorrowersAndItems = () => {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
       }
     };
 

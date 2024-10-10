@@ -85,9 +85,8 @@ const BorrowReturnItemForm: React.FC<Props> = ({ type, itemId, reLoading }) => {
         setIsOpen(false);
         reLoading(true);
         const borrowReturnRequest = result.data as BorrowReturnRequest;
-        type === "AVAILABLE"
-          ? notifyBorrowRequest(borrowReturnRequest)
-          : notifyReturnRequest(borrowReturnRequest);
+        if (type === "AVAILABLE") notifyBorrowRequest(borrowReturnRequest);
+        else notifyReturnRequest(borrowReturnRequest);
       } else {
         toast.warning(result.message);
       }

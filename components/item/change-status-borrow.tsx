@@ -92,7 +92,7 @@ const ChangeStatusBorrow: React.FC<Props> = ({
         setIsOpen(false);
         reLoading(true);
         const approveRequest = result.data as TransactionsApprove;
-        approveRequest && notifyApproveRequest(approveRequest);
+        notifyApproveRequest(approveRequest);
       } else {
         toast.warning(result.message);
       }
