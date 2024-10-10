@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PlusCircle, Pencil, Save } from "lucide-react";
+import { PlusCircle, Pencil, Save, Album } from "lucide-react";
 
 import {
   Dialog,
@@ -38,11 +38,13 @@ type ItemCategory = {
 };
 
 interface AddEditCategoryFormProps {
+  isDefault: boolean;
   item?: ItemCategory | null;
   reLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const AddEditCategoryForm: React.FC<AddEditCategoryFormProps> = ({
+  isDefault,
   item,
   reLoading,
 }) => {
@@ -54,6 +56,27 @@ const AddEditCategoryForm: React.FC<AddEditCategoryFormProps> = ({
       name: item?.name || "",
     },
   });
+
+  const addDefault = async () => {
+    try {
+      const resp = await axios.post("/api/category-items/default");
+      const result = resp.data;
+      if (result.success) {
+        toast.success(result.message);
+        reLoading(true);
+      } else {
+        toast.warning(result.message);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error saving user:", error);
+        toast.error(error.message); // Use error.message for a user-friendly message
+      } else {
+        console.error("Unexpected error:", error);
+        toast.error("An unexpected error occurred."); // Fallback error message
+      }
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -98,14 +121,23 @@ const AddEditCategoryForm: React.FC<AddEditCategoryFormProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="h-8 w-8 p-0">
-          <span className="sr-only">{item ? "แก้ไข" : "เพิ่ม"}</span>
-          {item ? (
-            <Pencil className="h-4 w-4" />
-          ) : (
-            <PlusCircle className="h-4 w-4" />
+        <div className="flex gap-2">
+          <Button className="h-8 w-8 p-0">
+            <span className="sr-only">{item ? "แก้ไข" : "เพิ่ม"}</span>
+            {item ? (
+              <Pencil className="h-4 w-4" />
+            ) : (
+              <PlusCircle className="h-4 w-4" />
+            )}
+          </Button>
+
+          {isDefault && (
+            <Button className="h-8" onClick={addDefault}>
+              <Album className="h-4 w-4 mr-2" />
+              <span>ค่าเริ่มต้น</span>
+            </Button>
           )}
-        </Button>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

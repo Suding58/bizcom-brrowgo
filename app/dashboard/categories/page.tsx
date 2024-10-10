@@ -59,7 +59,11 @@ const ManageCategoryTablePage = () => {
       cell: ({ row }) => {
         return (
           <div className="flex gap-2">
-            <AddEditCategoryForm item={row.original} reLoading={setLoading} />
+            <AddEditCategoryForm
+              isDefault={false}
+              item={row.original}
+              reLoading={setLoading}
+            />
             <ItemType
               categoryId={row.original.id}
               categoryName={row.original.name}
@@ -111,7 +115,9 @@ const ManageCategoryTablePage = () => {
         data={data}
         columns={columns}
         loading={loading}
-        AddEditForm={() => <AddEditCategoryForm reLoading={setLoading} />}
+        AddEditForm={() => (
+          <AddEditCategoryForm isDefault={true} reLoading={setLoading} />
+        )}
       />
     </div>
   );
