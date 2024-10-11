@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 export async function POST(
   request: NextRequest,
   { params }: { params: { itemId: string } }
-) {
+): Promise<NextResponse> {
   const { itemId } = params;
 
   try {
@@ -22,6 +22,14 @@ export async function POST(
 
     const itemExits = await prisma.item.findUnique({
       where: { id: Number(itemId) },
+      include: {
+        detail: {
+          include: {
+            category: true,
+            type: true,
+          },
+        },
+      },
     });
 
     if (!itemExits) {
@@ -53,6 +61,32 @@ export async function POST(
         {
           success: false,
           message: "ไม่พบข้อมูลของผู้ต้องการยืม",
+        },
+        { status: 200 }
+      );
+    }
+
+    // Check if the user is already borrowing an item from the same category and type
+    const existingBorrow = await prisma.itemTransaction.findFirst({
+      where: {
+        borrowerId: userExits.id,
+        statusBorrow: {
+          in: ["APPROVED", "WAITAPPROVAL"],
+        },
+        item: {
+          detail: {
+            categoryId: itemExits.detail.categoryId,
+            typeId: itemExits.detail.typeId,
+          },
+        },
+      },
+    });
+
+    if (existingBorrow) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "ยืมไม่ได้ท่านเคยยืมของในหมวดหมู่และประเภทเดียวกัน",
         },
         { status: 200 }
       );
