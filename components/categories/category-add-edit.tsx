@@ -121,24 +121,21 @@ const AddEditCategoryForm: React.FC<AddEditCategoryFormProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <div className="flex gap-2">
-          <Button className="h-8 w-8 p-0">
-            <span className="sr-only">{item ? "แก้ไข" : "เพิ่ม"}</span>
-            {item ? (
-              <Pencil className="h-4 w-4" />
-            ) : (
-              <PlusCircle className="h-4 w-4" />
-            )}
-          </Button>
-
-          {isDefault && (
-            <Button className="h-8" onClick={addDefault}>
-              <Album className="h-4 w-4 mr-2" />
-              <span>ค่าเริ่มต้น</span>
-            </Button>
+        <Button className="h-8 w-8 p-0">
+          <span className="sr-only">{item ? "แก้ไข" : "เพิ่ม"}</span>
+          {item ? (
+            <Pencil className="h-4 w-4" />
+          ) : (
+            <PlusCircle className="h-4 w-4" />
           )}
-        </div>
+        </Button>
       </DialogTrigger>
+      {isDefault && (
+        <Button className="h-8" onClick={addDefault}>
+          <Album className="h-4 w-4 mr-2" />
+          <span>ค่าเริ่มต้น</span>
+        </Button>
+      )}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{item ? "แก้ไขรายการ" : "เพิ่มรายการใหม่"}</DialogTitle>
