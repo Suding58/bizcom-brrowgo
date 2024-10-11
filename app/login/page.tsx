@@ -25,7 +25,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SquareArrowLeft, LogIn } from "lucide-react";
-import { sendTelegramNotification } from "@/utility/telegramNotifier";
 
 const formSchema = z.object({
   username: z.string().min(5, {
@@ -61,7 +60,6 @@ const LoginPage = () => {
       } else if (resp?.ok) {
         form.reset();
         toast.success("เข้าสู่ระบบสำเร็จ");
-        sendTelegramNotification("ทดสอบ");
         router.push("/dashboard");
       }
     } catch (error: unknown) {

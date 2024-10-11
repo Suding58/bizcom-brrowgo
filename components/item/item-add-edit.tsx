@@ -38,6 +38,7 @@ import { Item } from "@/interface";
 
 import { toast } from "sonner";
 import Image from "next/image";
+import { translateStatus } from "@/utility/item-status";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -399,7 +400,7 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
                               status // Map over the Role enum values
                             ) => (
                               <SelectItem key={status} value={status}>
-                                {status}
+                                {translateStatus(status)}
                               </SelectItem>
                             )
                           )}
