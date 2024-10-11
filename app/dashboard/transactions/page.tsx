@@ -11,6 +11,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { timeTH } from "@/utility/time-format";
 import { getColorBackground } from "@/utility/transaction-status";
+import { translateStatus } from "@/utility/item-status";
 
 const TransactionsPage = () => {
   const [data, setData] = useState<ItemTransactions[]>([]);
@@ -79,7 +80,11 @@ const TransactionsPage = () => {
         const status = row.getValue("statusBorrow") as string;
         const bgColor = getColorBackground(status);
 
-        return <Badge className={`${bgColor} text-white`}>{status}</Badge>;
+        return (
+          <Badge className={`${bgColor} text-white`}>
+            {translateStatus(status)}
+          </Badge>
+        );
       },
     },
     {
@@ -140,7 +145,11 @@ const TransactionsPage = () => {
       cell: ({ row }) => {
         const status = row.getValue("statusReturn") as string;
         const bgColor = getColorBackground(status);
-        return <Badge className={`${bgColor} text-white`}>{status}</Badge>;
+        return (
+          <Badge className={`${bgColor} text-white`}>
+            {translateStatus(status)}
+          </Badge>
+        );
       },
     },
     {

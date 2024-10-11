@@ -13,4 +13,18 @@ const getColorBackground = (status: string): string => {
   }
 };
 
-export { getColorBackground };
+const translateStatus = (status: string): string => {
+  const statusTranslations: { [key: string]: string } = {
+    PENDING: "รอดำเนินการ",
+    WAITAPPROVAL: "รอการอนุมัติ",
+    APPROVED: "อนุมัติแล้ว",
+    REJECTED: "ถูกปฏิเสธ",
+    AVAILABLE: "พร้อมใช้งาน",
+    BORROWED: "ถูกยืม",
+    MAINTENANCE: "กำลังซ่อมบำรุง",
+  };
+
+  return statusTranslations[status] || "สถานะไม่รู้จัก";
+};
+
+export { getColorBackground, translateStatus };

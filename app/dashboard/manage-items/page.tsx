@@ -13,7 +13,7 @@ import AddEditItemForm from "@/components/item/item-add-edit";
 import ItemBorrowRecord from "@/components/item/item-transaction";
 import DialogDelete from "@/components/dialog/dialog-delete";
 import axios from "axios";
-import { getColorBackground } from "@/utility/item-status";
+import { getColorBackground, translateStatus } from "@/utility/item-status";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const ManageItemsTablePage = () => {
@@ -150,7 +150,9 @@ const ManageItemsTablePage = () => {
         const status = String(row.getValue("status"));
         const backgroundColor = getColorBackground(status);
         return (
-          <Badge className={`${backgroundColor} text-white`}>{status}</Badge>
+          <Badge className={`${backgroundColor} text-white`}>
+            {translateStatus(status)}
+          </Badge>
         );
       },
     },

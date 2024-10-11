@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import axios from "axios";
 import { Item } from "@/interface";
-import { getColorBackground } from "@/utility/item-status";
+import { getColorBackground, translateStatus } from "@/utility/item-status";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -87,7 +87,7 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
                   data?.status ? data.status : ""
                 )} text-white justify-self-center text-sm`}
               >
-                {data?.status ? data.status : "UNKNOWN"}
+                {translateStatus(data?.status ? data.status : "")}
               </Badge>
               <Label className="text-md">
                 {`หมายเลข: ${data?.parcelNumber}`}{" "}

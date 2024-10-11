@@ -34,6 +34,7 @@ import {
 import { useSession } from "next-auth/react";
 import { TransactionsApprove } from "@/interface";
 import { notifyApproveRequest } from "@/utility/notify-format";
+import { translateStatus } from "@/utility/item-status";
 
 const formSchema = z.object({
   statusReturn: z
@@ -149,7 +150,7 @@ const ChangeStatusReturn: React.FC<Props> = ({
                           statusReturn // Map over the Role enum values
                         ) => (
                           <SelectItem key={statusReturn} value={statusReturn}>
-                            {statusReturn}
+                            {translateStatus(statusReturn)}
                           </SelectItem>
                         )
                       )}

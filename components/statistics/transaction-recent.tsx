@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import axios from "axios";
-import { getColorBackground } from "@/utility/item-status";
+import { getColorBackground, translateStatus } from "@/utility/item-status";
 import { Badge } from "../ui/badge";
 
 interface User {
@@ -87,10 +87,16 @@ const TransactionRecent = () => {
               <div className="flex flex-col items-end">
                 <Badge
                   className={`${getColorBackground(
-                    transaction.item.status
+                    transaction.returnDate === null
+                      ? transaction.statusBorrow
+                      : transaction.statusReturn
                   )} text-white text-[10px]`}
                 >
-                  {transaction.item.status}
+                  {translateStatus(
+                    transaction.returnDate === null
+                      ? transaction.statusBorrow
+                      : transaction.statusReturn
+                  )}
                 </Badge>
                 <span>{transaction.item.name}</span>
               </div>

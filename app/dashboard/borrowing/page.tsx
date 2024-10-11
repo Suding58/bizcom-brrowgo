@@ -14,6 +14,7 @@ import { timeTH } from "@/utility/time-format";
 import { getColorBackground } from "@/utility/transaction-status";
 import { Badge } from "@/components/ui/badge";
 import ChangeStatusBorrow from "@/components/item/change-status-borrow";
+import { translateStatus } from "@/utility/item-status";
 
 const ManageBorrowingTablePage = () => {
   const [data, setData] = useState<ItemWithTransaction[]>([]);
@@ -114,7 +115,11 @@ const ManageBorrowingTablePage = () => {
         const status = row.getValue("statusBorrow") as string;
         const bgColor = getColorBackground(status);
 
-        return <Badge className={`${bgColor} text-white`}>{status}</Badge>;
+        return (
+          <Badge className={`${bgColor} text-white`}>
+            {translateStatus(status)}
+          </Badge>
+        );
       },
     },
     {

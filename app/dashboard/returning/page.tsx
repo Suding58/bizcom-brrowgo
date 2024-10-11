@@ -14,6 +14,7 @@ import { timeTH } from "@/utility/time-format";
 import { getColorBackground } from "@/utility/transaction-status";
 import { Badge } from "@/components/ui/badge";
 import ChangeStatusReturn from "@/components/item/change-status-return";
+import { translateStatus } from "@/utility/item-status";
 
 const ManageReturningTablePage = () => {
   const [data, setData] = useState<ItemWithTransaction[]>([]);
@@ -114,7 +115,11 @@ const ManageReturningTablePage = () => {
         const status = row.getValue("statusReturn") as string;
         const bgColor = getColorBackground(status);
 
-        return <Badge className={`${bgColor} text-white`}>{status}</Badge>;
+        return (
+          <Badge className={`${bgColor} text-white`}>
+            {translateStatus(status)}
+          </Badge>
+        );
       },
     },
     {
