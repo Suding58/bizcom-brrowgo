@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+    ],
+  },
   env: {
     TELEGRAM_BOT_TOKEN: "7282599182:AAGDRiq26S9M2XRF3cNPJsHUDE1C8rfOla0",
     TELEGRAM_CHAT_ID: "-1002373716259",

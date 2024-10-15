@@ -5,7 +5,7 @@ const getColorBackground = (status: string): string => {
     case "AVAILABLE":
       return "bg-green-500 hover:bg-green-400"; // สีเขียว
     case "BORROWED":
-      return "bg-blue-500 hover:bg-blue-400"; // สีแดง
+      return "bg-red-500 hover:bg-red-400"; // สีแดง
     case "WAITAPPROVAL":
       return "bg-indigo-500 hover:bg-indigo-400"; // สีเหลือง
     default:
@@ -17,7 +17,7 @@ const translateStatus = (status: string): string => {
   const statusTranslations: { [key: string]: string } = {
     PENDING: "รอดำเนินการ",
     WAITAPPROVAL: "รอการอนุมัติ",
-    APPROVED: "อนุมัติแล้ว",
+    APPROVED: "อนุมัติ",
     REJECTED: "ถูกปฏิเสธ",
     AVAILABLE: "พร้อมใช้งาน",
     BORROWED: "ถูกยืม",

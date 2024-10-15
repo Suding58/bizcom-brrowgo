@@ -73,6 +73,9 @@ export async function POST(
         statusBorrow: {
           in: ["APPROVED", "WAITAPPROVAL"],
         },
+        statusReturn: {
+          in: ["PENDING", "WAITAPPROVAL"],
+        },
         item: {
           detail: {
             categoryId: itemExits.detail.categoryId,

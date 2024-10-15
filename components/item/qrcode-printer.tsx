@@ -44,8 +44,11 @@ const QRCodePrinter: React.FC<QRCodePrinterProps> = ({ uuids }) => {
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
+          flexWrap: "wrap", // Allow items to wrap to the next line
+          justifyContent: "center", // Center items horizontally
           alignItems: "center",
+          maxWidth: "100%", // Ensure it doesn't exceed the container width
         }}
       >
         {qrCodes.map((qrCodeUrl, index) => (
@@ -56,16 +59,16 @@ const QRCodePrinter: React.FC<QRCodePrinterProps> = ({ uuids }) => {
               textAlign: "center",
               display: "flex", // Use flex to align items
               flexDirection: "column",
-              // justifyContent: "space-between", // Space out children
               alignItems: "center",
-              width: "240px", // Fixed width for equal sizing
-              height: "180px", // Fixed height for equal sizing
+              width: "150px", // Fixed width for equal sizing
+              height: "135px", // Fixed height for equal sizing
               padding: "5px",
               border: "1px solid black",
             }}
           >
             <p
               style={{
+                marginTop: "4px",
                 marginBottom: "0px",
                 fontSize: "14px",
                 fontWeight: "bold",
@@ -76,11 +79,14 @@ const QRCodePrinter: React.FC<QRCodePrinterProps> = ({ uuids }) => {
             <Image
               src={qrCodeUrl}
               alt={`QR Code for UUID ${uuids[index].uuid}`}
-              width={120}
-              height={120}
+              width={80}
+              height={80}
             />
-            <p style={{ marginTop: "-5px", fontSize: "12px" }}>
-              แผนเทคโนโลยีธุรกิจดิจิทัล วิทยาลัยการอาชีพปัตตานี
+            <p style={{ marginTop: "-1px", fontSize: "12px" }}>
+              แผนกเทคโนโลยีธุรกิจดิจิทัล
+            </p>
+            <p style={{ marginTop: "-12px", fontSize: "12px" }}>
+              วิทยาลัยการอาชีพปัตตานี
             </p>
           </div>
         ))}
