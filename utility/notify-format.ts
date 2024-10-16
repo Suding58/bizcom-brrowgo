@@ -13,6 +13,6 @@ export const notifyReturnRequest = async (request: BorrowReturnRequest) => {
 };
 
 export const notifyApproveRequest = async (request: TransactionsApprove) => {
-  const message = `🔎 อนุมัติ ${request.type}\n👨🏻‍💻 ผู้อนุมัติ ${request.approveName}\n🔑 รหัสรายการ ${request.uuid}\n📦 รายการยืม "${request.itemName}" \n📃 รายละเอียด ${request.itemDetail}`;
+  const message = `🔎 อนุมัติ ${request.type}\n🙋🏻‍♂️ คำขอจาก ${request.borrowerName}\n👨🏻‍💻 ผู้อนุมัติ ${request.approveName}\n🔑 รหัสรายการ ${request.uuid}\n📦 รายการยืม "${request.itemName}" \n📃 รายละเอียด ${request.itemDetail}`;
   await sendLineNotification(message);
 };

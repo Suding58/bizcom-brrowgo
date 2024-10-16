@@ -65,7 +65,11 @@ const TopBorrowersAndItems = () => {
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
                     <AvatarImage
-                      src={borrower.profileUrl}
+                      src={`/api/images/${
+                        borrower.profileUrl
+                          ? borrower.profileUrl
+                          : `notfound/no_image.jpg`
+                      }`}
                       alt={borrower.name}
                     />
                     <AvatarFallback>{borrower.name.charAt(0)}</AvatarFallback>
