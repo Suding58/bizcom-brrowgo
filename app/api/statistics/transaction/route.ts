@@ -4,25 +4,34 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const transactions = await prisma.itemTransaction.findMany({
+    const latestTransactions = await prisma.itemTransaction.findMany({
       include: {
-        item: true, // Include related Item data
-        borrower: true, // Include related User data (borrower)
+        item: true,
+        borrower: true,
       },
-      orderBy: {
-        borrowDate: "desc", // Order by borrow date, most recent first
-      },
-      take: 5, // Limit to the 5 most recent transactions
+      orderBy: [
+        {
+          returnDate: "desc",
+        },
+        {
+          borrowDate: "desc",
+        },
+      ],
+      take: 10,
     });
 
     return NextResponse.json(
-      { success: true, message: "พบข้อมูล", data: transactions },
+      {
+        success: true,
+        message: "พบข้อมูล",
+        data: latestTransactions,
+      },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error in POST request:", error);
+    console.error("Error in GET request:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { success: false, error: "Internal Server Error" },
       { status: 500 }
     );
   }

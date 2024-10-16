@@ -144,7 +144,7 @@ export async function PUT(
         name: name,
         description: description,
         parcelNumber: parcelNumber,
-        imageUrl: imageUrl ? `/uploads/${imageUrl}` : itemExits.imageUrl,
+        imageUrl: imageUrl ? `item/${imageUrl}` : itemExits.imageUrl,
         status: itemStatus,
         detail: {
           update: {

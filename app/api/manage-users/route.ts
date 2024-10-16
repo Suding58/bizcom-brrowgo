@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
           name,
           phone,
           email,
-          profileUrl: `/uploads/user/${imageName}`,
+          profileUrl: `user/${imageName}`,
           address,
           role,
         },

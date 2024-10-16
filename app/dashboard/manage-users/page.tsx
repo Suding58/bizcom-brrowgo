@@ -136,7 +136,9 @@ const ManageUserTablePage = () => {
         return (
           <div className="flex justify-start">
             <Image
-              src={profileUrl ? profileUrl : "/logo/no_image.jpg"}
+              src={`/api/images/${
+                profileUrl ? profileUrl : `notfound/no_image.jpg`
+              }`}
               alt={row.original.name}
               width={80} // กำหนดความกว้างของภาพ
               height={80} // กำหนดความสูงของภาพ

@@ -6,6 +6,8 @@ const getColorBackground = (status: string): string => {
       return "bg-green-500 hover:bg-green-400"; // สีเขียว
     case "BORROWED":
       return "bg-red-500 hover:bg-red-400"; // สีแดง
+    case "APPROVED":
+      return "bg-green-500 hover:bg-green-400"; // สีเขียว
     case "WAITAPPROVAL":
       return "bg-indigo-500 hover:bg-indigo-400"; // สีเหลือง
     default:

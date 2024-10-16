@@ -75,7 +75,9 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
           ) : (
             <div className="grid gap-2">
               <Image
-                src={data?.imageUrl ? data.imageUrl : "/logo/no_image.jpg"}
+                src={`/api/images/${
+                  data?.imageUrl ? data?.imageUrl : `notfound/no_image.jpg`
+                }`}
                 alt={uuid}
                 width={80} // กำหนดความกว้างของภาพ
                 height={80} // กำหนดความสูงของภาพ

@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Save, ClipboardList, ClipboardCheck } from "lucide-react";
+import { Save, ClipboardList, ClipboardCheck, Loader2 } from "lucide-react";
 
 import {
   Dialog,
@@ -45,6 +45,7 @@ interface Props {
 
 const BorrowReturnItemForm: React.FC<Props> = ({ type, itemId, reLoading }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [submiting, setSubmiting] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,6 +56,8 @@ const BorrowReturnItemForm: React.FC<Props> = ({ type, itemId, reLoading }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setSubmiting(true);
+
       const formData = new FormData();
       formData.append("cid", values.cid);
 
@@ -93,6 +96,8 @@ const BorrowReturnItemForm: React.FC<Props> = ({ type, itemId, reLoading }) => {
     } catch (error: any) {
       console.error("Error saving item:", error);
       toast.error(error.toString());
+    } finally {
+      setSubmiting(false);
     }
   };
 
@@ -133,9 +138,14 @@ const BorrowReturnItemForm: React.FC<Props> = ({ type, itemId, reLoading }) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              <span className="mr-2">ยืนยัน</span>
-              <Save className="h-4 w-4" />
+            <Button type="submit" className="w-full" disabled={submiting}>
+              {submiting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+
+              <span className="ml-2">ยืนยัน</span>
             </Button>
           </form>
         </Form>

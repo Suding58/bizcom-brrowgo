@@ -90,7 +90,13 @@ const TopBorrowersAndItems = () => {
               <li key={index} className="flex justify-between space-x-2 mb-2">
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
-                    <AvatarImage src={item.imageUrl} alt={item.name} />
+                    <AvatarImage
+                      src={`/api/images/${
+                        item.imageUrl ? item.imageUrl : `notfound/no_image.jpg`
+                      }`}
+                      alt={item.name}
+                    />
+
                     <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>

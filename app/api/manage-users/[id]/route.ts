@@ -94,9 +94,7 @@ export async function PUT(
         name,
         phone,
         email,
-        profileUrl: profileUrl
-          ? `/uploads/user/${profileUrl}`
-          : userExits.profileUrl,
+        profileUrl: profileUrl ? `user/${profileUrl}` : userExits.profileUrl,
         address,
         role,
       },

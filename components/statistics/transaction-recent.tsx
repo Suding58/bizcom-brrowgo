@@ -68,7 +68,11 @@ const TransactionRecent = () => {
           >
             <Avatar className="hidden h-9 w-9 sm:flex">
               <AvatarImage
-                src={transaction.borrower.profileUrl || "/logo/bizcom-logo.jpg"}
+                src={`/api/images/${
+                  transaction.borrower.profileUrl
+                    ? transaction.borrower.profileUrl
+                    : `notfound/no_image.jpg`
+                }`}
                 alt={`avatar${transaction.borrower.id}`}
               />
               <AvatarFallback>{transaction.borrower.name[0]}</AvatarFallback>

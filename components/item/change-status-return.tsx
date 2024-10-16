@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SquarePen, Save } from "lucide-react";
+import { SquarePen, Save, Loader2 } from "lucide-react";
 
 import {
   Dialog,
@@ -59,6 +59,7 @@ const ChangeStatusReturn: React.FC<Props> = ({
   reLoading,
 }) => {
   const { data: session } = useSession();
+  const [submiting, setSubmiting] = useState<boolean>(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,6 +71,8 @@ const ChangeStatusReturn: React.FC<Props> = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setSubmiting(true);
+
       const formData = new FormData();
       formData.append("statusReturn", values.statusReturn);
       formData.append(
@@ -105,6 +108,8 @@ const ChangeStatusReturn: React.FC<Props> = ({
         console.error("Unexpected error:", error);
         toast.error("An unexpected error occurred."); // Fallback error message
       }
+    } finally {
+      setSubmiting(false);
     }
   };
 
@@ -160,9 +165,14 @@ const ChangeStatusReturn: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              <span className="mr-2">บันทึก</span>
-              <Save className="h-4 w-4" />
+            <Button type="submit" className="w-full" disabled={submiting}>
+              {submiting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+
+              <span className="ml-2">บันทึก</span>
             </Button>
           </form>
         </Form>

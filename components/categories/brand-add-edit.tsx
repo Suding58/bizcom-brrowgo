@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PlusCircle, Pencil, Save } from "lucide-react";
+import { PlusCircle, Pencil, Save, Loader2 } from "lucide-react";
 
 import {
   Dialog,
@@ -49,7 +49,7 @@ const AddEditBrandForm: React.FC<AddEditBrandFormProps> = ({
   reLoading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [submiting, setSubmiting] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,6 +59,8 @@ const AddEditBrandForm: React.FC<AddEditBrandFormProps> = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setSubmiting(true);
+
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("categoryId", categoryId.toString());
@@ -91,6 +93,8 @@ const AddEditBrandForm: React.FC<AddEditBrandFormProps> = ({
         console.error("Unexpected error:", error);
         toast.error("An unexpected error occurred."); // Fallback error message
       }
+    } finally {
+      setSubmiting(false);
     }
   };
 
@@ -132,9 +136,14 @@ const AddEditBrandForm: React.FC<AddEditBrandFormProps> = ({
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              <span className="mr-2">บันทึก</span>
-              <Save className="h-4 w-4" />
+            <Button type="submit" className="w-full" disabled={submiting}>
+              {submiting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+
+              <span className="ml-2">บันทึก</span>
             </Button>
           </form>
         </Form>

@@ -16,6 +16,7 @@ export async function middleware(request: NextRequest) {
   // Define API routes that do not require a session
   const publicApiRoutes = [
     "/api/auth",
+    "/api/images/:path*",
     "/api/public/:path*",
     "/api/register",
     "/api/manage-items/uuid/",

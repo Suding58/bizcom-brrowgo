@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Save, SquareArrowLeft } from "lucide-react";
+import { Loader2, Save, SquareArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import {
   Card,
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -83,8 +84,10 @@ const formSchema = z
   });
 
 const RegisterPage = () => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const router = useRouter();
 
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [submiting, setSubmiting] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -101,6 +104,7 @@ const RegisterPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setSubmiting(true);
       const formData = new FormData();
       formData.append("cid", values.cid);
       formData.append("username", values.username);
@@ -125,6 +129,7 @@ const RegisterPage = () => {
         toast.success(result.message);
         form.reset(); // เคลียร์ข้อมูลในฟอร์มหลังจากส่งข้อมูลสำเร็จ
         setImagePreview(null);
+        router.push("/");
       } else {
         toast.warning(result.message);
       }
@@ -136,6 +141,8 @@ const RegisterPage = () => {
         console.error("Unexpected error:", error);
         toast.error("An unexpected error occurred."); // Fallback error message
       }
+    } finally {
+      setSubmiting(false);
     }
   };
 
@@ -342,9 +349,14 @@ const RegisterPage = () => {
                   />
                 </div>
               </div>
-              <Button type="submit" className="w-full">
-                <span className="mr-2">ยืนยัน</span>
-                <Save className="h-4 w-4" />
+              <Button type="submit" className="w-full" disabled={submiting}>
+                {submiting ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Save className="h-4 w-4" />
+                )}
+
+                <span className="ml-2">ยืนยัน</span>
               </Button>
             </form>
           </Form>

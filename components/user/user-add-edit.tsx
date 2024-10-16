@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { PlusCircle, Pencil, Save } from "lucide-react";
+import { PlusCircle, Pencil, Save, Loader2 } from "lucide-react";
 
 import {
   Dialog,
@@ -107,6 +107,7 @@ const AddEditUserForm: React.FC<AddEditItemFormProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [submiting, setSubmiting] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -125,12 +126,13 @@ const AddEditUserForm: React.FC<AddEditItemFormProps> = ({
 
   useEffect(() => {
     if (user?.profileUrl) {
-      setImagePreview(user.profileUrl); // ตั้งค่า imagePreview ถ้ามีภาพ
+      setImagePreview(`/api/images/${user.profileUrl}`); // ตั้งค่า imagePreview ถ้ามีภาพ
     }
   }, [user]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setSubmiting(true);
       const formData = new FormData();
       formData.append("cid", values.cid);
       formData.append("username", values.username);
@@ -172,6 +174,8 @@ const AddEditUserForm: React.FC<AddEditItemFormProps> = ({
         console.error("Unexpected error:", error);
         toast.error("An unexpected error occurred."); // Fallback error message
       }
+    } finally {
+      setSubmiting(false);
     }
   };
 
@@ -410,9 +414,14 @@ const AddEditUserForm: React.FC<AddEditItemFormProps> = ({
                 />
               </div>
             </div>
-            <Button type="submit" className="w-full">
-              <span className="mr-2">บันทึก</span>
-              <Save className="h-4 w-4" />
+            <Button type="submit" className="w-full" disabled={submiting}>
+              {submiting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+
+              <span className="ml-2">บันทึก</span>
             </Button>
           </form>
         </Form>

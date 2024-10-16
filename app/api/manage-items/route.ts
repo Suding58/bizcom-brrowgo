@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
           description,
           parcelNumber,
           status: itemStatus,
-          imageUrl: `/uploads/item/${imageName}`,
+          imageUrl: `item/${imageName}`,
           detailId: detailId.id,
         },
       });
