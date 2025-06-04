@@ -91,6 +91,17 @@ export async function PUT(
           status: "AVAILABLE",
         },
       });
+
+
+       await prisma.transactionLog.create({
+        data: {
+          action: "RETURNED",
+          description: `${approverExits.name} อนุมัติรายการคืนครุภัณฑ์ ${updatedItem.item.name} ของผู้ยืม ${updatedItem.borrower.name}`,
+          userId: approverExits.id,
+          itemId: updatedItem.item.id,
+          transactionId: updatedItem.id
+        }
+      });
     }
 
     return NextResponse.json(

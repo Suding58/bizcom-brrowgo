@@ -92,6 +92,16 @@ export async function PUT(
           status: "BORROWED",
         },
       });
+
+      await prisma.transactionLog.create({
+        data: {
+          action: "BORROWED",
+          description: `${approverExits.name} อนุมัติรายการยืมครุภัณฑ์ ${updatedItem.item.name} ของผู้ยืม ${updatedItem.borrower.name}`,
+          userId: approverExits.id,
+          itemId: updatedItem.item.id,
+          transactionId: updatedItem.id
+        }
+      });
     }
 
     return NextResponse.json(

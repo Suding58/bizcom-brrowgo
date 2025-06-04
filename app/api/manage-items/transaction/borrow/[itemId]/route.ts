@@ -123,6 +123,16 @@ export async function POST(
           status: "WAITAPPROVAL",
         },
       });
+
+      await prisma.transactionLog.create({
+          data: {
+            action: "BORROW_WAITAPPROVAL",
+            description: `ผู้ใช้ ${userExits.name} ได้ทำรายการยืมครุภัณฑ์ ${newTransaction.item.name}`,
+            userId: userExits.id,
+            itemId: newTransaction.item.id,
+            transactionId: newTransaction.id
+          }
+      });
     }
 
     return NextResponse.json(

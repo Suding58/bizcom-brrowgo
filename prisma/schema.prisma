@@ -13,6 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model TransactionLog {
+  id             Int       @id @default(autoincrement())
+  action         String    // เช่น "BORROW_REQUEST", "BORROW_APPROVED", "RETURN_REJECTED"
+  description    String?   @db.MediumText // อธิบายเพิ่มเติม เช่น "User X requested to borrow item Y"
+  userId         Int
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemId         Int?
+  item           Item?     @relation(fields: [itemId], references: [id], onDelete: SetNull)
+  transactionId  Int?
+  transaction    ItemTransaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+  createdAt      DateTime  @default(now())
+}
+
+
 model ItemTransaction {
   id               Int               @id @default(autoincrement())
   itemId           Int
@@ -29,6 +43,8 @@ model ItemTransaction {
   approvedReturn   User?             @relation("ApproverReturn", fields: [approvedReturnId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @default(now()) @updatedAt
+
+  TransactionLog TransactionLog[]
 }
 
 model Item {
@@ -39,11 +55,14 @@ model Item {
   parcelNumber    String            @unique
   imageUrl        String? // เก็บ URL รูปภาพของสิ่งของ
   status          ItemStatus        @default(AVAILABLE)
+  hwid            String?           @unique
   detail          ItemDetail        @relation(fields: [detailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   detailId        Int
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
   ItemTransaction ItemTransaction[] @relation("ItemTransactions")
+
+  TransactionLog TransactionLog[]
 }
 
 model ItemDetail {
@@ -105,6 +124,8 @@ model User {
   ItemTransaction ItemTransaction[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
+
+  TransactionLog TransactionLog[]
 }
 
 enum TransactionStatus {
