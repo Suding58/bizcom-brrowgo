@@ -166,9 +166,8 @@ const ManageItemsTablePage = () => {
         return (
           <div className="flex justify-start">
             <Image
-              src={`/api/images/${
-                imageUrl ? imageUrl : `notfound/no_image.jpg`
-              }`}
+              src={`/api/images/${imageUrl ? imageUrl : `notfound/no_image.jpg`
+                }`}
               alt={row.original.name}
               width={80} // กำหนดความกว้างของภาพ
               height={80} // กำหนดความสูงของภาพ

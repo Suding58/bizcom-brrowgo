@@ -2,17 +2,18 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
+
 export async function GET(
   request: Request,
-  { params }: { params: { hwid: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { hwid } = params;
+  const { id } = params;
 
-  const item = await prisma.item.findUnique({
-    where: { hwid: hwid }
+  const commands = await prisma.itemActionCommand.findMany({
+    where: { itemId : parseInt(id) }
   });
 
-  if (!item) {
+  if (!commands) {
     return NextResponse.json(
       { success: false, message: "ไม่พบข้อมูล" },
       { status: 200 }
@@ -20,7 +21,7 @@ export async function GET(
   }
 
   return NextResponse.json(
-    { success: true, message: "พบข้อมูล", data: item },
+    { success: true, message: "พบข้อมูล", data: commands },
     { status: 200 }
   );
 }

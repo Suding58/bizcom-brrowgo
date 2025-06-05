@@ -47,6 +47,7 @@ export async function GET() {
     category: item.detail.category.name, // แปลง category เป็น string
     brand: item.detail.brand.name, // แปลง brand เป็น string
     type: item.detail.type.name, // แปลง type เป็น string
+    hwid : item.hwid,
     status: item.status,
     categoryId: item.detail.category.id,
     brandId: item.detail.brand.id,
@@ -68,6 +69,7 @@ export async function POST(request: NextRequest) {
     const categoryId = parseInt(formData.get("categoryId") as string);
     const typeId = parseInt(formData.get("typeId") as string);
     const brandId = parseInt(formData.get("brandId") as string);
+    const hwid = formData.get("hwid") as string || "";
     const statusString = formData.get("status") as string;
     const image = formData.get("image") as File;
 
@@ -134,6 +136,7 @@ export async function POST(request: NextRequest) {
           parcelNumber,
           status: itemStatus,
           imageUrl: `item/${imageName}`,
+          hwid : hwid,
           detailId: detailId.id,
         },
       });

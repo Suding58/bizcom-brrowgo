@@ -53,8 +53,16 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
   }, [loading, uuid]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-red-950">
-      <Card className="max-w-[500px] opacity-90">
+
+    <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 z-0 animate-gradient bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-[length:400%_400%]"></div>
+
+      {/* Overlay blur */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm z-10"></div>
+
+      {/* Login box */}
+      <Card className="max-w-[500px] opacity-90 z-20">
         <CardHeader>
           <CardTitle className="text-xl">ข้อมูลรายการ</CardTitle>
           {!loading && (
@@ -75,9 +83,8 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
           ) : (
             <div className="grid gap-2">
               <Image
-                src={`/api/images/${
-                  data?.imageUrl ? data?.imageUrl : `notfound/no_image.jpg`
-                }`}
+                src={`/api/images/${data?.imageUrl ? data?.imageUrl : `notfound/no_image.jpg`
+                  }`}
                 alt={uuid}
                 width={80} // กำหนดความกว้างของภาพ
                 height={80} // กำหนดความสูงของภาพ
@@ -125,7 +132,27 @@ const BorrowPage = ({ params }: { params: { uuid: string } }) => {
           </div>
         </CardFooter>
       </Card>
-    </div>
+
+
+
+      <style jsx>{`
+        .animate-gradient {
+          animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
+    </main>
   );
 };
 

@@ -42,6 +42,7 @@ export type Item = {
   category: string;
   brand: string;
   type: string;
+  hwid: string | null;
   status: string;
   categoryId: number;
   typeId: number;
@@ -61,6 +62,7 @@ export type ItemWithTransaction = {
   category: string;
   brand: string;
   type: string;
+    hwid: string | null;
   status: string;
   borrowerName: string;
   borrowDate: string;

@@ -18,11 +18,21 @@ const Home = () => {
   }
 
   return (
-    <main className="flex flex-col h-screen justify-center bg-slate-300">
-      <div className="container md self-center py-10">
-        <div className="flex justify-center gap-4 p-2">
+    <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 z-0 animate-gradient bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-[length:400%_400%]"></div>
+
+      {/* Overlay blur */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm z-10"></div>
+
+      {/* Login box */}
+      <div className="container md self-center py-10 relative z-20">
+        <div
+          className="flex justify-center gap-4 p-6 rounded-xl"
+        >
           <Button
-            className="h-[150px] w-[150px] bg-neutral-900 hover:bg-neutral-600 transition-transform transform hover:scale-110"
+            className="h-[150px] w-[150px] hover:bg-transparent transition-transform transform hover:scale-110 rounded-xl
+    bg-white/10 backdrop-blur-md border border-white/30 shadow-lg flex flex-col items-center justify-center gap-2"
             onClick={() => router.push("/register")}
           >
             <div className="flex flex-col items-center gap-2">
@@ -31,7 +41,8 @@ const Home = () => {
             </div>
           </Button>
           <Button
-            className="h-[150px] w-[150px] bg-cyan-900 hover:bg-cyan-700 transition-transform transform hover:scale-110"
+            className="h-[150px] w-[150px]  hover:bg-transparent transition-transform transform hover:scale-110 rounded-xl
+    bg-white/10 backdrop-blur-md border border-white/30 shadow-lg flex flex-col items-center justify-center gap-2"
             onClick={() => router.push("/login")}
           >
             <div className="flex flex-col items-center gap-2">
@@ -41,6 +52,25 @@ const Home = () => {
           </Button>
         </div>
       </div>
+
+
+      <style jsx>{`
+        .animate-gradient {
+          animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
     </main>
   );
 };

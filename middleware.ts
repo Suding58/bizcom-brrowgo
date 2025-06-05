@@ -19,7 +19,10 @@ export async function middleware(request: NextRequest) {
     "/api/images/:path*",
     "/api/public/:path*",
     "/api/register",
+    "/api/check-stat",
+    "/api/command",
     "/api/manage-items/uuid/",
+    "/api/manage-items/command/",
     "/api/manage-items/transaction/borrow/",
     "/api/manage-items/transaction/return/",
     "/api/notifications/:path*",
@@ -37,7 +40,7 @@ export async function middleware(request: NextRequest) {
   ) {
     // If no session and trying to access protected routes (excluding public API routes), redirect to login
     if (pathname.startsWith("/dashboard") || pathname.startsWith("/api")) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 

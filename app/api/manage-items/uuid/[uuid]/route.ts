@@ -74,6 +74,7 @@ export async function GET(
     category: item.detail.category.name,
     brand: item.detail.brand.name,
     type: item.detail.type.name,
+    hwid: item.hwid,
     status: item.status,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,

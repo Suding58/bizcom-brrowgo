@@ -96,6 +96,7 @@ const formSchema = z.object({
     .min(1, {
       message: "กรุณาเลือกยี่ห้อ",
     }),
+  hwid: z.string().optional(),
 });
 
 type Category = {
@@ -134,6 +135,7 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
       categoryId: item?.categoryId || 0,
       typeId: item?.typeId || 0,
       brandId: item?.brandId || 0,
+      hwid: item?.hwid || "",
       status: item?.status || "AVAILABLE",
     },
   });
@@ -154,6 +156,7 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
       formData.append("categoryId", values.categoryId.toString());
       formData.append("typeId", values.typeId.toString());
       formData.append("brandId", values.brandId.toString());
+      formData.append("hwid", values.hwid || "");
       formData.append("status", values.status);
 
       if (values.image && values.image.length > 0) {
@@ -162,15 +165,15 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
 
       const resp = item
         ? await axios.put(`/api/manage-items/${item.id}`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         : await axios.post("/api/manage-items", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
       const result = resp.data;
       if (result.success) {
@@ -445,6 +448,23 @@ const AddEditItemForm: React.FC<AddEditItemFormProps> = ({
                             className="resize-none"
                             {...field}
                           />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+
+                <div className="col-span-2">
+                  <FormField
+                    control={form.control}
+                    name="hwid"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>HWID</FormLabel>
+                        <FormControl>
+                          <Input placeholder="hwid" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
