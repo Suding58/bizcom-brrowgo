@@ -25,11 +25,8 @@ const Home = () => {
       {/* Overlay blur */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm z-10"></div>
 
-      {/* Login box */}
       <div className="container md self-center py-10 relative z-20">
-        <div
-          className="flex justify-center gap-4 p-6 rounded-xl"
-        >
+        <div className="flex justify-center gap-4 p-6 rounded-xl">
           <Button
             className="h-[150px] w-[150px] hover:bg-transparent transition-transform transform hover:scale-110 rounded-xl
     bg-white/10 backdrop-blur-md border border-white/30 shadow-lg flex flex-col items-center justify-center gap-2"
@@ -52,7 +49,6 @@ const Home = () => {
           </Button>
         </div>
       </div>
-
 
       <style jsx>{`
         .animate-gradient {

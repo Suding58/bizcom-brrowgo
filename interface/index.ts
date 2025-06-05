@@ -43,6 +43,7 @@ export type Item = {
   brand: string;
   type: string;
   hwid: string | null;
+  isOnline: boolean;
   status: string;
   categoryId: number;
   typeId: number;
@@ -62,7 +63,8 @@ export type ItemWithTransaction = {
   category: string;
   brand: string;
   type: string;
-    hwid: string | null;
+  hwid: string | null;
+  isOnline: boolean;
   status: string;
   borrowerName: string;
   borrowDate: string;

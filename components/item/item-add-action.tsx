@@ -1,11 +1,11 @@
 "use client";
-import { TransactionStatus } from "@prisma/client";
-import { useState, Dispatch, SetStateAction } from "react";
+import { ActionCommand } from "@prisma/client";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
 import {
   Form,
   FormControl,
@@ -14,8 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Save, Loader2, SquareArrowDown } from "lucide-react";
-
+import { Save, Loader2, Zap } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -31,72 +30,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useSession } from "next-auth/react";
-import { TransactionsApprove } from "@/interface";
-import { notifyApproveRequest } from "@/utility/notify-format";
-import { translateStatus } from "@/utility/item-status";
+import { Input } from "../ui/input";
+
+type Props = {
+  itemId: number;
+};
 
 const formSchema = z.object({
-  statusReturn: z
+  action: z
     .string({
-      required_error: "กรุณาเลือกสถานะ",
-      invalid_type_error: "สถานะไม่ถูกต้อง",
+      required_error: "กรุณาเลือกคำสั่ง",
+      invalid_type_error: "คำสั่งไม่ถูกต้อง",
     })
     .min(1, {
-      message: "กรุณาเลือกสถานะ",
+      message: "กรุณาเลือกคำสั่ง",
     }),
+  message: z.string().min(0, {
+    message: "",
+  }),
 });
 
-interface Props {
-  statusReturn: string;
-  transactionId: number;
-  reLoading: Dispatch<SetStateAction<boolean>>;
-}
-
-const ChangeStatusReturn: React.FC<Props> = ({
-  statusReturn,
-  transactionId,
-  reLoading,
-}) => {
-  const { data: session } = useSession();
+const ItemAddAction = ({ itemId }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [submiting, setSubmiting] = useState<boolean>(false);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      statusReturn: statusReturn,
+      action: "MESSAGE_BOX",
+      message: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setSubmiting(true);
-
       const formData = new FormData();
-      formData.append("statusReturn", values.statusReturn);
-      formData.append(
-        "approvedReturnId",
-        session?.user.id ? session.user.id.toString() : ""
-      );
+      formData.append("itemId", itemId.toString());
+      formData.append("action", values.action);
+      formData.append("message", values.message);
 
-      const resp = await axios.put(
-        `/api/transaction-items/${transactionId}/approved/return`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const resp = await axios.post(`/api/manage-items/command`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       const result = resp.data;
       if (result.success) {
         toast.success(result.message);
         setIsOpen(false);
-        reLoading(true);
-        const approveRequest = result.data as TransactionsApprove;
-        notifyApproveRequest(approveRequest);
       } else {
         toast.warning(result.message);
       }
@@ -113,30 +100,26 @@ const ChangeStatusReturn: React.FC<Props> = ({
     }
   };
 
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="h-8 w-8 p-0 bg-violet-500 hover:bg-violet-400">
-          <span className="sr-only">เปลี่ยนสถานะการคืน</span>
-          <SquareArrowDown className="h-4 w-4" />
+        <Button className="h-8 w-8 p-0 bg-yellow-400 hover:bg-yellow-200">
+          <span className="sr-only">เพิ่มคำสั่ง</span>
+          <Zap className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>เปลี่ยนสถานะการคืน</DialogTitle>
+          <DialogTitle>เพิ่มคำสั่ง</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-4"
+            className="space-y-2 mt-2"
           >
             <FormField
               control={form.control}
-              name="statusReturn" // Make sure this matches the field name in your form schema
+              name="action" // Make sure this matches the field name in your form schema
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>สถานะ</FormLabel>
@@ -150,12 +133,12 @@ const ChangeStatusReturn: React.FC<Props> = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.values(TransactionStatus).map(
+                      {Object.values(ActionCommand).map(
                         (
-                          statusReturn // Map over the Role enum values
+                          action // Map over the Role enum values
                         ) => (
-                          <SelectItem key={statusReturn} value={statusReturn}>
-                            {translateStatus(statusReturn)}
+                          <SelectItem key={action} value={action}>
+                            {action}
                           </SelectItem>
                         )
                       )}
@@ -165,6 +148,23 @@ const ChangeStatusReturn: React.FC<Props> = ({
                 </FormItem>
               )}
             />
+
+            {form.watch("action") === "MESSAGE_BOX" && (
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ข้อความ</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <Button type="submit" className="w-full" disabled={submiting}>
               {submiting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -172,7 +172,7 @@ const ChangeStatusReturn: React.FC<Props> = ({
                 <Save className="h-4 w-4" />
               )}
 
-              <span className="ml-2">บันทึก</span>
+              <span className="ml-2">เพิ่ม</span>
             </Button>
           </form>
         </Form>
@@ -181,4 +181,4 @@ const ChangeStatusReturn: React.FC<Props> = ({
   );
 };
 
-export default ChangeStatusReturn;
+export default ItemAddAction;

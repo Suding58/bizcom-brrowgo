@@ -29,4 +29,15 @@ const translateStatus = (status: string): string => {
   return statusTranslations[status] || "สถานะไม่รู้จัก";
 };
 
-export { getColorBackground, translateStatus };
+const translateStatusLogs = (status: string): string => {
+  const statusTranslations: { [key: string]: string } = {
+    WAITAPPROVAL_BORROW: "รอการอนุมัติยืม",
+    WAITAPPROVAL_RETURN: "รอการอนุมัติคืน",
+    APPROVED_RETURN: "อนุมัติคืน",
+    APPROVED_BORROW: "อนุมัติยืม",
+  };
+
+  return statusTranslations[status] || "สถานะไม่รู้จัก";
+};
+
+export { getColorBackground, translateStatus, translateStatusLogs };

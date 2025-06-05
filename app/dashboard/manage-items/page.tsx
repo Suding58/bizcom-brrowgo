@@ -15,6 +15,7 @@ import DialogDelete from "@/components/dialog/dialog-delete";
 import axios from "axios";
 import { getColorBackground, translateStatus } from "@/utility/item-status";
 import { Checkbox } from "@/components/ui/checkbox";
+import ItemAddAction from "@/components/item/item-add-action";
 
 const ManageItemsTablePage = () => {
   const [data, setData] = useState<Item[]>([]);
@@ -134,6 +135,35 @@ const ManageItemsTablePage = () => {
       cell: ({ row }) => <div>{row.getValue("brand")}</div>,
     },
     {
+      accessorKey: "isOnline",
+      size: 10, // ขนาดที่เหมาะสมสำหรับสถานะ
+      header: ({ column }) => (
+        <Button
+          className="p-0"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ออนไลน์
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const isOnline =
+          String(row.getValue("isOnline")).toLowerCase() == "true";
+        return (
+          <Badge
+            className={`${
+              isOnline
+                ? "bg-green-500 hover:bg-green-400"
+                : "bg-gray-500 hover:bg-gray-400"
+            } text-white`}
+          >
+            {isOnline ? "ใช้งาน" : "ไม่ใช้งาน"}
+          </Badge>
+        );
+      },
+    },
+    {
       accessorKey: "status",
       size: 10, // ขนาดที่เหมาะสมสำหรับสถานะ
       header: ({ column }) => (
@@ -166,8 +196,9 @@ const ManageItemsTablePage = () => {
         return (
           <div className="flex justify-start">
             <Image
-              src={`/api/images/${imageUrl ? imageUrl : `notfound/no_image.jpg`
-                }`}
+              src={`/api/images/${
+                imageUrl ? imageUrl : `notfound/no_image.jpg`
+              }`}
               alt={row.original.name}
               width={80} // กำหนดความกว้างของภาพ
               height={80} // กำหนดความสูงของภาพ
@@ -188,6 +219,7 @@ const ManageItemsTablePage = () => {
           <div className="flex gap-2">
             <AddEditItemForm item={row.original} reLoading={setLoading} />
             <ItemBorrowRecord itemId={row.original.id} />
+            <ItemAddAction itemId={row.original.id} />
             <DialogDelete
               urlAPI={`/api/manage-items/${row.getValue("id")}`}
               reLoading={setLoading}

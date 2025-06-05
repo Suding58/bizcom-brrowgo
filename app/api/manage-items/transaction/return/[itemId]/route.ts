@@ -114,13 +114,13 @@ export async function PUT(
       });
 
       await prisma.transactionLog.create({
-          data: {
-            action: "RETURN_WAITAPPROVAL",
-            description: `ผู้ใช้ ${userExits.name} ได้ทำรายการคืนครุภัณฑ์ ${updatedTransaction.item.name} รอการอนุมัติ`,
-            userId: userExits.id,
-            itemId: updatedTransaction.item.id,
-            transactionId: updatedTransaction.id
-          }
+        data: {
+          action: "WAITAPPROVAL_RETURN",
+          description: `ผู้ใช้ ${userExits.name} ได้ทำรายการคืนครุภัณฑ์ ${updatedTransaction.item.name} รอการอนุมัติ`,
+          userId: userExits.id,
+          itemId: updatedTransaction.item.id,
+          transactionId: updatedTransaction.id,
+        },
       });
     }
 

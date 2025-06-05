@@ -125,13 +125,13 @@ export async function POST(
       });
 
       await prisma.transactionLog.create({
-          data: {
-            action: "BORROW_WAITAPPROVAL",
-            description: `ผู้ใช้ ${userExits.name} ได้ทำรายการยืมครุภัณฑ์ ${newTransaction.item.name}`,
-            userId: userExits.id,
-            itemId: newTransaction.item.id,
-            transactionId: newTransaction.id
-          }
+        data: {
+          action: "WAITAPPROVAL_BORROW",
+          description: `ผู้ใช้ ${userExits.name} ได้ทำรายการยืมครุภัณฑ์ ${newTransaction.item.name}`,
+          userId: userExits.id,
+          itemId: newTransaction.item.id,
+          transactionId: newTransaction.id,
+        },
       });
     }
 

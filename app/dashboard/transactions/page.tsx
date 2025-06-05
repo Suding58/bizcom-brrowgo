@@ -12,6 +12,16 @@ import { toast } from "sonner";
 import { timeTH } from "@/utility/time-format";
 import { getColorBackground } from "@/utility/transaction-status";
 import { translateStatus } from "@/utility/item-status";
+import DialogDelete from "@/components/dialog/dialog-delete";
+import ChangeStatusBorrow from "@/components/item/change-status-borrow";
+import ChangeStatusReturn from "@/components/item/change-status-return";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const TransactionsPage = () => {
   const [data, setData] = useState<ItemTransactions[]>([]);
@@ -171,6 +181,46 @@ const TransactionsPage = () => {
         return <div>{`${approved ? approved : "รออนุมัติ"}`}</div>;
       },
     },
+    {
+      id: "actions",
+      enableHiding: true,
+      size: 10, // ขนาดที่เหมาะสมสำหรับปุ่มกระทำ
+      header: () => <div className="p-0">กระทำ</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="flex gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ChangeStatusBorrow
+                    statusBorrow={row.original.statusBorrow}
+                    transactionId={row.original.id}
+                    reLoading={setLoading}
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="top">แก้ไขสถานะการยืม</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ChangeStatusReturn
+                    statusReturn={row.original.statusReturn}
+                    transactionId={row.original.id}
+                    reLoading={setLoading}
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="top">แก้ไขสถานะการคืน</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <DialogDelete
+              urlAPI={`/api/transaction-items/${row.getValue("id")}`}
+              reLoading={setLoading}
+            />
+          </div>
+        );
+      },
+    },
   ];
 
   // Fetch data from the API
@@ -193,7 +243,7 @@ const TransactionsPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [loading]);
 
   return (
     <DataTable

@@ -51,7 +51,7 @@ model ItemActionCommand {
   id               Int               @id @default(autoincrement())
   itemId           Int
   item             Item              @relation("ItemActionCommands", fields: [itemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  command          String          @default("")
+  command          ActionCommand     @default(MESSAGE_BOX)
   message          String          
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @default(now()) @updatedAt
@@ -66,6 +66,7 @@ model Item {
   imageUrl        String? // เก็บ URL รูปภาพของสิ่งของ
   status          ItemStatus        @default(AVAILABLE)
   hwid            String?           @unique
+  isOnline        Boolean           @default(false)
   detail          ItemDetail        @relation(fields: [detailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   detailId        Int
   createdAt       DateTime          @default(now())
@@ -148,6 +149,12 @@ enum TransactionStatus {
 enum Role {
   USER
   ADMIN
+}
+
+enum ActionCommand {
+  MESSAGE_BOX
+  SHUTDOWN
+  RESTART
 }
 
 enum ItemStatus {

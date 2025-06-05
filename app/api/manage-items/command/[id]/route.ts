@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
-
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
@@ -10,7 +9,7 @@ export async function GET(
   const { id } = params;
 
   const commands = await prisma.itemActionCommand.findMany({
-    where: { itemId : parseInt(id) }
+    where: { itemId: parseInt(id) },
   });
 
   if (!commands) {

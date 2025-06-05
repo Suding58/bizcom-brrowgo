@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SquarePen, Save, Loader2 } from "lucide-react";
+import { Save, Loader2, ArchiveRestore } from "lucide-react";
 
 import {
   Dialog,
@@ -119,9 +119,9 @@ const ChangeStatusBorrow: React.FC<Props> = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="h-8 w-8 p-0 bg-violet-500 hover:bg-violet-400">
+        <Button className="h-8 w-8 p-0 bg-blue-800 hover:bg-blue-400">
           <span className="sr-only">เปลี่ยนสถานะการยืม</span>
-          <SquarePen className="h-4 w-4" />
+          <ArchiveRestore className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
