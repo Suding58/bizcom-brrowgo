@@ -19,6 +19,7 @@ export async function PUT(
       data: { hwid: hwid },
     });
     
+
     return NextResponse.json(
       {
         success: updatedItems != null,
