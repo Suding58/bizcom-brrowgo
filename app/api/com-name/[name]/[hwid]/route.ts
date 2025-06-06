@@ -11,7 +11,10 @@ export async function PUT(
     const updatedItems = await prisma.item.updateMany({
       where: {
         name: name,
-        hwid: null,
+        OR: [
+          { hwid: null },
+          { hwid: '' },
+        ],
       },
       data: { hwid: hwid },
     });

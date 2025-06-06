@@ -58,6 +58,7 @@ export async function GET(
     category: item.detail.category.name, // แปลง category เป็น string
     brand: item.detail.brand.name, // แปลง brand เป็น string
     type: item.detail.type.name, // แปลง type เป็น string
+    isOnline: item.isOnline,
     hwid : item.hwid,
     status: item.status,
     categoryId: item.detail.category.id,

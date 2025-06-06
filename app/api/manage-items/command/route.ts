@@ -38,15 +38,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
         { status: 200 }
       );
-    } else if (!itemExits.isOnline) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "ไม่สามารถเพิ่มคำสั่งได้ เนื่องจากรายการไม่ถูกใช้งาน",
-        },
-        { status: 200 }
-      );
     }
 
     const newAction = await prisma.itemActionCommand.create({
