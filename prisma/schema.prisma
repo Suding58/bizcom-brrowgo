@@ -14,18 +14,17 @@ datasource db {
 }
 
 model TransactionLog {
-  id             Int       @id @default(autoincrement())
-  action         String    // เช่น "BORROW_REQUEST", "BORROW_APPROVED", "RETURN_REJECTED"
-  description    String?   @db.MediumText // อธิบายเพิ่มเติม เช่น "User X requested to borrow item Y"
-  userId         Int
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  itemId         Int?
-  item           Item?     @relation(fields: [itemId], references: [id], onDelete: SetNull)
-  transactionId  Int?
-  transaction    ItemTransaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
-  createdAt      DateTime  @default(now())
+  id            Int              @id @default(autoincrement())
+  action        String // เช่น "BORROW_REQUEST", "BORROW_APPROVED", "RETURN_REJECTED"
+  description   String?          @db.MediumText // อธิบายเพิ่มเติม เช่น "User X requested to borrow item Y"
+  userId        Int
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemId        Int?
+  item          Item?            @relation(fields: [itemId], references: [id], onDelete: SetNull)
+  transactionId Int?
+  transaction   ItemTransaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+  createdAt     DateTime         @default(now())
 }
-
 
 model ItemTransaction {
   id               Int               @id @default(autoincrement())
@@ -48,31 +47,31 @@ model ItemTransaction {
 }
 
 model ItemActionCommand {
-  id               Int               @id @default(autoincrement())
-  itemId           Int
-  item             Item              @relation("ItemActionCommands", fields: [itemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  command          ActionCommand     @default(MESSAGE_BOX)
-  message          String          
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @default(now()) @updatedAt
+  id        Int           @id @default(autoincrement())
+  itemId    Int
+  item      Item          @relation("ItemActionCommands", fields: [itemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  command   ActionCommand @default(MESSAGE_BOX)
+  message   String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now()) @updatedAt
 }
 
 model Item {
-  id              Int               @id @default(autoincrement())
-  uuid            String
-  name            String
-  description     String?
-  parcelNumber    String            @unique
-  imageUrl        String? // เก็บ URL รูปภาพของสิ่งของ
-  status          ItemStatus        @default(AVAILABLE)
-  hwid            String?           @unique
-  isOnline        Boolean           @default(false)
-  detail          ItemDetail        @relation(fields: [detailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  detailId        Int
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  ItemTransaction ItemTransaction[] @relation("ItemTransactions")
-  TransactionLog TransactionLog[]
+  id                Int                 @id @default(autoincrement())
+  uuid              String
+  name              String
+  description       String?
+  parcelNumber      String              @unique
+  imageUrl          String? // เก็บ URL รูปภาพของสิ่งของ
+  status            ItemStatus          @default(AVAILABLE)
+  hwid              String?             @unique
+  isOnline          Boolean             @default(false)
+  detail            ItemDetail          @relation(fields: [detailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  detailId          Int
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now()) @updatedAt
+  ItemTransaction   ItemTransaction[]   @relation("ItemTransactions")
+  TransactionLog    TransactionLog[]
   ItemActionCommand ItemActionCommand[] @relation("ItemActionCommands")
 }
 
@@ -155,6 +154,8 @@ enum ActionCommand {
   MESSAGE_BOX
   SHUTDOWN
   RESTART
+  HWID
+  COMPUTER_NAME
 }
 
 enum ItemStatus {

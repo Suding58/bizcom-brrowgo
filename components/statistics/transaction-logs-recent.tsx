@@ -71,17 +71,17 @@ const TransactionLogsRecent = () => {
             <Avatar className="hidden h-9 w-9 sm:flex">
               <AvatarImage
                 src={`/api/images/${
-                  transaction.borrower.profileUrl
+                  transaction?.borrower?.profileUrl
                     ? transaction.borrower.profileUrl
-                    : `notfound/no_image.jpg`
+                    : "notfound/no_image.jpg"
                 }`}
-                alt={`avatar${transaction.borrower.id}`}
+                alt={`avatar${transaction?.borrower?.id ?? ""}`}
               />
-              <AvatarFallback>{transaction.borrower.name[0]}</AvatarFallback>
+              <AvatarFallback>{transaction?.borrower?.name[0]}</AvatarFallback>
             </Avatar>
             <div className="grid gap-1 text-center sm:text-left">
               <p className="text-sm font-medium leading-none">
-                {`${transaction.borrower.name}/${translateStatusLogs(
+                {`${transaction?.borrower?.name}/${translateStatusLogs(
                   transaction.action
                 )}`}
               </p>
