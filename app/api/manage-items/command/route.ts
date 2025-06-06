@@ -38,12 +38,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
         { status: 200 }
       );
-    } else if (itemExits.status !== "BORROWED" || !itemExits.isOnline) {
+    } else if (!itemExits.isOnline) {
       return NextResponse.json(
         {
           success: false,
           message:
-            "ไม่สามารถเพิ่มคำสั่งได้ เนื่องจากรายการไม่ถูกยืมหรือไม่ถูกใช้งาน",
+            "ไม่สามารถเพิ่มคำสั่งได้ เนื่องจากรายการไม่ถูกใช้งาน",
         },
         { status: 200 }
       );

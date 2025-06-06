@@ -10,6 +10,24 @@ export async function PUT(
     const { hwid, online } = params;
     const isOnline = online.toLowerCase() === "true";
 
+
+    const itemExits = await prisma.item.findFirst({
+      where : {
+        hwid : hwid
+      }
+    })
+
+    if(!itemExits)
+    {
+      return NextResponse.json(
+      {
+        success: false,
+        message: `Not fond hwid ${hwid}`,
+      },
+      { status: 200 }
+    );
+    }
+
     const updatedItems = await prisma.item.update({
       where: {
         hwid: hwid,

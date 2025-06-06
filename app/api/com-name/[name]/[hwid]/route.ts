@@ -8,7 +8,6 @@ export async function PUT(
 ) {
   try {
     const { name, hwid } = params;
-    console.log(params);
     const updatedItems = await prisma.item.updateMany({
       where: {
         name: name,
@@ -16,7 +15,7 @@ export async function PUT(
       },
       data: { hwid: hwid },
     });
-
+    
     return NextResponse.json(
       {
         success: updatedItems != null,
