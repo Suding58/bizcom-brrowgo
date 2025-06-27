@@ -66,6 +66,7 @@ export async function PUT(
       data: {
         statusReturn: statusReturn,
         approvedReturnId: approvedReturnId,
+        returnDate: new Date(),
       },
       include: {
         borrower: true,
